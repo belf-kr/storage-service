@@ -13,9 +13,11 @@ class ApplicationConfig:
 
         with open(path, "r") as json_file:
             content = json.load(json_file)
-            self.APP_NAME: str = content["APP_NAME"]
-            self.VERSION: str = content["VERSION"]
-            self.PORT: int = content["PORT"]
+            self.APP_NAME = content["APP_NAME"]
+            self.VERSION = content["VERSION"]
+            self.HOST = content["HOST"]
+            self.PORT = content["PORT"]
+            self.ACCESS_LOG = content["ACCESS_LOG"]
 
     @classmethod
     def get_instance(cls):
