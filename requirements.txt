@@ -12,3 +12,5 @@ sanic-routing==0.7.1
 ujson==4.0.2
 uvloop==0.15.3
 websockets==9.1
+
+mysql-replication~=0.25
