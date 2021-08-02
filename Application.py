@@ -1,3 +1,6 @@
+from sanic_cors import CORS
+from tortoise.contrib.sanic import register_tortoise
+
 from typing import (
     Optional,
     Callable,
@@ -22,10 +25,12 @@ from sanic.handlers import ErrorHandler
 from sanic.router import Router
 from sanic.signals import SignalRouter
 
-from Config.Application.ApplicationConfig import ApplicationConfig
+from Config.ApplicationConfig import ApplicationConfig
 
-from Database.DatabaseManager import DatabaseManager
-from Routing.Root.RootRouting import RootRouting
+from Routing.FileRouting import FileRouting
+from Routing.RootRouting import RootRouting
+from Utiles.SQLHelper import SQLHelper
+from models import FileModel
 
 
 class Application(Sanic):
@@ -46,7 +51,6 @@ class Application(Sanic):
             register: Optional[bool] = None,
             dumps: Optional[Callable[..., str]] = None,
     ) -> None:
-        # Config Application
         self.application_config = ApplicationConfig.get_instance()
 
         super().__init__(
@@ -67,17 +71,31 @@ class Application(Sanic):
         )
 
     def start(self):
+        self.app_init()
+        self.set_middleware()
         self.set_events()
         self.set_routing()
+        self.set_cors()
         self.run(
             host=self.application_config.HOST,
             port=self.application_config.PORT
         )
 
+    def app_init(self):
+        register_tortoise(
+            app=self,
+            db_url=SQLHelper().mysql_connection_url,
+            modules={"models": [FileModel]},
+            generate_schemas=True
+        )
+
+    def set_middleware(self):
+        ...
+
     def set_events(self):
         @self.listener('before_server_start')
         async def before_server_start(app: Sanic, loop: uvloop.Loop):
-            app.ctx.database_manager = DatabaseManager.get_instance()
+            ...
 
         @self.listener('after_server_start')
         async def after_server_start(app: Sanic, loop: uvloop.Loop):
@@ -93,3 +111,7 @@ class Application(Sanic):
 
     def set_routing(self):
         RootRouting.set_routing(self)
+        FileRouting.set_routing(self)
+
+    def set_cors(self):
+        CORS(self)
