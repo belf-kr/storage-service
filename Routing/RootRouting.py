@@ -1,6 +1,6 @@
 from sanic import Request, json, Sanic
 
-from Config.Application.ApplicationConfig import ApplicationConfig
+from Config.ApplicationConfig import ApplicationConfig
 
 import os
 
@@ -30,6 +30,6 @@ class RootRouting:
 
     @staticmethod
     def set_routing(app: Sanic):
-        app.add_route(RootRouting.ping, "/ping")
+        app.add_route(RootRouting.ping, f"/ping")
         app.add_route(RootRouting.version, "/version")
         app.add_route(RootRouting.env, "/env")
