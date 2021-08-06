@@ -6,7 +6,6 @@ class DatabaseConfig(BaseConfig):
     _instance = None
 
     def __init__(self):
-        print("[DatabaseConfig] __init__")
         super().__init__()
 
         with open(BaseConfig.get_instance().DB_CONFIG_PATH, "r") as f:
@@ -31,3 +30,11 @@ class DatabaseConfig(BaseConfig):
             "user": self.USER,
             "password": self.PASSWORD
         }
+
+    def get_connection_url(self):
+        return f"mysql://" \
+               f"{self.USER}:{self.PASSWORD}" \
+               f"@" \
+               f"{self.HOST}:{self.PORT}" \
+               f"/" \
+               f"{self.DB}"
