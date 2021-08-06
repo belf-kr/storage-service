@@ -1,7 +1,6 @@
-import pprint
-
 from sanic.router import Router
 from sanic_cors import CORS
+
 from tortoise.contrib.sanic import register_tortoise
 
 from typing import (
@@ -118,8 +117,8 @@ class Application(Sanic):
                 "slave": DatabaseConfig.get_instance().get_connection_url()
             },
             "apps": {
-                "Models": {
-                    "Models": [File],
+                "models": {
+                    "models": [File],
                     "default_connection": "master",
                 }
             },
