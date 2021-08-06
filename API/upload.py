@@ -5,7 +5,7 @@ from sanic import Blueprint, json
 from sanic.request import Request
 
 from Manager.FileManager import FileManager
-from models.File import File as FileModel
+from Models.File import File as FileModel
 
 upload = Blueprint(name="api_upload", url_prefix="/")
 

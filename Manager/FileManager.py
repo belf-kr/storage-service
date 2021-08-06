@@ -3,7 +3,7 @@ import aiofiles
 from sanic.request import File
 
 from Common.CommonDefines import CommonDefines
-from models.File import File as FileModel
+from Models.File import File as FileModel
 
 
 class FileManager:

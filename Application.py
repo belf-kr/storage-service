@@ -32,7 +32,7 @@ from API import api
 
 from Config.ApplicationConfig import ApplicationConfig
 
-from models import File
+from Models import File
 
 from tortoise import Model
 
@@ -118,8 +118,8 @@ class Application(Sanic):
                 "slave": DatabaseConfig.get_instance().get_connection_url()
             },
             "apps": {
-                "models": {
-                    "models": [File],
+                "Models": {
+                    "Models": [File],
                     "default_connection": "master",
                 }
             },
