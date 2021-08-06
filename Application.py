@@ -1,3 +1,6 @@
+import pprint
+
+from sanic.router import Router
 from sanic_cors import CORS
 from tortoise.contrib.sanic import register_tortoise
 
@@ -22,19 +25,27 @@ from sanic.config import (
 )
 
 from sanic.handlers import ErrorHandler
-from sanic.router import Router
 from sanic.signals import SignalRouter
+
+from Config.DatabaseConfig import DatabaseConfig
+from API import api
 
 from Config.ApplicationConfig import ApplicationConfig
 
-from Routing.FileRouting import FileRouting
-from Routing.RootRouting import RootRouting
-from Utiles.SQLHelper import SQLHelper
-from models import FileModel
+from models import File
+
+from tortoise import Model
+
+
+class TortoiseRouter:
+    def db_for_read(self, model: Type[Model]):
+        return "slave"
+
+    def db_for_write(self, model: Type[Model]):
+        return "master"
 
 
 class Application(Sanic):
-
     def __init__(
             self,
             config: Optional[Config] = None,
@@ -72,25 +83,12 @@ class Application(Sanic):
 
     def start(self):
         self.app_init()
-        self.set_middleware()
         self.set_events()
-        self.set_routing()
-        self.set_cors()
         self.run(
             host=self.application_config.HOST,
-            port=self.application_config.PORT
+            port=self.application_config.PORT,
+            auto_reload=True
         )
-
-    def app_init(self):
-        register_tortoise(
-            app=self,
-            db_url=SQLHelper().mysql_connection_url,
-            modules={"models": [FileModel]},
-            generate_schemas=True
-        )
-
-    def set_middleware(self):
-        ...
 
     def set_events(self):
         @self.listener('before_server_start')
@@ -109,9 +107,32 @@ class Application(Sanic):
         async def after_server_start(app: Sanic, loop: uvloop.Loop):
             ...
 
-    def set_routing(self):
-        RootRouting.set_routing(self)
-        FileRouting.set_routing(self)
-
-    def set_cors(self):
+    def app_init(self):
+        # CORS
         CORS(self)
+
+        # Master Slave Config of MySQL Connection Info
+        config = {
+            "connections": {
+                "master": DatabaseConfig.get_instance().get_connection_url(),
+                "slave": DatabaseConfig.get_instance().get_connection_url()
+            },
+            "apps": {
+                "models": {
+                    "models": [File],
+                    "default_connection": "master",
+                }
+            },
+            "routers": [TortoiseRouter],
+            "use_tz": False,
+            "timezone": "UTC",
+        }
+
+        register_tortoise(
+            app=self,
+            config=config,
+            generate_schemas=True
+        )
+
+        # Blue Print
+        self.blueprint(api)
