@@ -31,8 +31,6 @@ async def upload_get(request: Request):
         original_file_name=file.name
     )
 
-    print(file_model.original_file_name)
-
     request.app.add_task(FileManager.write(file, file_model))
 
     return json({
