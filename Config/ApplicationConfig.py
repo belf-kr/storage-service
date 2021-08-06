@@ -7,7 +7,6 @@ class ApplicationConfig:
     _instance = None
 
     def __init__(self):
-        print("[ApplicationConfig] __init__")
         super().__init__()
         path = BaseConfig.get_instance().APP_CONFIG_PATH
 
