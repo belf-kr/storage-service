@@ -7,7 +7,6 @@ class CommonPath:
     _instance = None
 
     def __init__(self):
-        print("[CommonPath] __init__")
         with open(CommonDefines.get_instance().CONFIG_ABS_PATH, "r") as json_file:
             content = json.load(json_file)
             self.common_defines = CommonDefines.get_instance()

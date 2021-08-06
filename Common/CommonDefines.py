@@ -1,4 +1,5 @@
 from pathlib import Path
+from os import path
 from os.path import exists
 from os import mkdir
 
@@ -7,7 +8,6 @@ class CommonDefines:
     _instance = None
 
     def __init__(self):
-        print("[CommonDefines] __init__")
         super().__init__()
 
         self.PROJECT_ABS_PATH = path.abspath(Path(__file__).parent.parent.absolute())
