@@ -11,8 +11,7 @@ class File(Model):
     file_name = CharField(max_length=100, null=False)
     ext = CharField(max_length=100, null=False)
     mime_type = CharField(max_length=100, null=False)
-    uploader = UUIDField()
-    last_update = DatetimeField(auto_now=True)
+    last_update_datetime = DatetimeField(auto_now=True)
 
     class Meta:
         tablename = "file"
@@ -29,3 +28,14 @@ class File(Model):
     @staticmethod
     def get_file_path_by_id(file_id: str):
         return f"{CommonDefines.get_instance().UPLOAD_PATH}/{file_id}"
+
+    async def to_dict(self):
+        return {
+            "id": str(self.pk),
+            "file_name": self.file_name,
+            "ext": self.ext,
+            "full_name": self.get_full_file_name(),
+            "mime_type": self.mime_type,
+            "last_update": str(self.last_update_datetime),
+            "file_size": await self.get_file_size()
+        }
