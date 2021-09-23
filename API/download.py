@@ -14,8 +14,7 @@ download = Blueprint(name="api_download", url_prefix="/")
 async def download_root(_, file_id: UUID):
     file_name = str(await File.get(id=file_id))
     file_path = FileManager.get_file_path(str(file_id))
-    headers = {}
-    headers = ResponseHeaderHelper.append_content_length_by_file_id_on_headers(str(file_id), headers)
+    headers = await ResponseHeaderHelper.append_content_length_by_file_id_on_headers(str(file_id), {})
     return await file_stream(
         file_path,
         headers=headers,
