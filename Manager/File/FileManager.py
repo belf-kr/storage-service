@@ -11,7 +11,7 @@ from Models.File import File as FileModel
 
 class FileManager:
     @staticmethod
-    def validate_files(files: Request.files):
+    def validate_files(files: Request.files) -> FileErrorCode:
         if files is None:
             return FileErrorCode.ERROR_NOT_FOUND
 
@@ -31,7 +31,7 @@ class FileManager:
         return FileErrorCode.ERROR_SUCCESS
 
     @staticmethod
-    async def create_file_model_from_file(file: File) -> FileModel:
+    async def create_file_model(file: File) -> FileModel:
         return await FileModel.create(
             file_name=uuid.uuid4(),
             mimetypes=file.type,
@@ -39,8 +39,8 @@ class FileManager:
         )
 
     @staticmethod
-    async def upload_file(file: File) -> None:
-        file_path = f"{CommonDefines.get_instance().UPLOAD_PATH}/{file.name}"
+    async def upload_file(file: File, file_model: FileModel) -> None:
+        file_path = f"{CommonDefines.get_instance().UPLOAD_PATH}/{file_model.file_name}"
         async with aiofiles.open(file_path, 'wb') as fp:
             await fp.write(file.body)
         await fp.close()
@@ -51,6 +51,7 @@ class FileManager:
         pk: str = ""
         if error_code == FileErrorCode.ERROR_SUCCESS:
             file: File = request.files.get(file_key)
-            pk = str((await FileManager.create_file_model_from_file(file)).pk)
-            request.app.add_task(FileManager.upload_file(file))
+            file_model = await FileManager.create_file_model(file)
+            pk = str(file_model.pk)
+            request.app.add_task(FileManager.upload_file(file, file_model))
         return error_code, pk
