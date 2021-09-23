@@ -12,3 +12,6 @@ class FileErrorCode(Enum):
 
     def to_error_message(self):
         return self.value
+
+    def is_success(self):
+        return self == FileErrorCode.ERROR_SUCCESS

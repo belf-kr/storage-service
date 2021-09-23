@@ -11,13 +11,20 @@ class RequestManager:
         return request_body
 
     @staticmethod
-    def get_content_length(request: Request) -> int:
-        content_length = 0
-        if RequestManager.has_content_length(request):
-            content_length = int(request.headers.get('content-length'))
-        return content_length
+    def get_file_keys(request: Request) -> list[str]:
+        file_keys: list[str] = []
+        if RequestManager.is_file_exist(request):
+            files: dict = request.files
+            return list(files.keys())
+        return file_keys
 
     @staticmethod
-    def has_content_length(request: Request) -> bool:
-        return 'content-length' in request.headers.keys()
+    def get_file_count(request: Request):
+        try:
+            return len(request.files)
+        except TypeError:
+            return 0
 
+    @staticmethod
+    def is_file_exist(request: Request) -> bool:
+        return request.files is not None
