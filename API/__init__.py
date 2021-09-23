@@ -1,10 +1,12 @@
 from sanic import Blueprint
-from .download import download
-from .upload import upload
+from .Download import download
+from .Upload import upload
+from .Information import information
 
 api = Blueprint.group(
     download,
     upload,
+    information,
     version=1,
     version_prefix="/api/v"
 )
