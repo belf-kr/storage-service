@@ -1,4 +1,6 @@
-import uuid
+import os
+
+from aiofiles import os as async_os
 
 import aiofiles
 
@@ -32,26 +34,35 @@ class FileManager:
 
     @staticmethod
     async def create_file_model(file: File) -> FileModel:
+        file_name, ext = os.path.splitext(file.name)
         return await FileModel.create(
-            file_name=uuid.uuid4(),
-            mimetypes=file.type,
-            original_file_name=file.name
+            file_name=file_name,
+            ext=ext
         )
 
     @staticmethod
-    async def upload_file(file: File, file_model: FileModel) -> None:
-        file_path = f"{CommonDefines.get_instance().UPLOAD_PATH}/{file_model.file_name}"
+    async def upload_file(file: File, file_id: str) -> None:
+        file_path = FileManager.get_file_path(file_id)
         async with aiofiles.open(file_path, 'wb') as fp:
             await fp.write(file.body)
         await fp.close()
 
     @staticmethod
+    def get_file_path(file_id: str) -> str:
+        return f"{CommonDefines.get_instance().UPLOAD_PATH}/{file_id}"
+
+    @staticmethod
     async def upload_file_from_request(request: Request, file_key: str) -> tuple[FileErrorCode, str]:
         error_code = FileManager.validate_files(request.files)
-        pk: str = ""
+        file_id: str = ""
         if error_code == FileErrorCode.ERROR_SUCCESS:
             file: File = request.files.get(file_key)
             file_model = await FileManager.create_file_model(file)
-            pk = str(file_model.pk)
-            request.app.add_task(FileManager.upload_file(file, file_model))
-        return error_code, pk
+            file_id = str(file_model.pk)
+            request.app.add_task(FileManager.upload_file(file, file_id))
+        return error_code, file_id
+
+    @staticmethod
+    async def get_file_size(file_id: str) -> int:
+        return (await async_os.stat(FileManager.get_file_path(file_id))).st_size
+
