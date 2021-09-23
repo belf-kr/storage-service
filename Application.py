@@ -124,7 +124,7 @@ class Application(Sanic):
             },
             "routers": [TortoiseRouter],
             "use_tz": False,
-            "timezone": "UTC",
+            "timezone": "asia/seoul",
         }
 
         register_tortoise(
