@@ -11,6 +11,10 @@ class RequestManager:
         return request_body
 
     @staticmethod
+    def is_file_exist(request: Request) -> bool:
+        return request.files is not None
+
+    @staticmethod
     def get_file_keys(request: Request) -> list[str]:
         file_keys: list[str] = []
         if RequestManager.is_file_exist(request):
@@ -20,11 +24,7 @@ class RequestManager:
 
     @staticmethod
     def get_file_count(request: Request):
-        try:
-            return len(request.files)
-        except TypeError:
-            return 0
-
-    @staticmethod
-    def is_file_exist(request: Request) -> bool:
-        return request.files is not None
+        file_count = 0
+        if RequestManager.is_file_exist(request):
+            file_count = len(request.files)
+        return file_count
