@@ -19,7 +19,7 @@ class RequestManager:
         file_keys: list[str] = []
         if RequestManager.is_file_exist(request):
             files: dict = request.files
-            return list(files.keys())
+            file_keys = list(files.keys())
         return file_keys
 
     @staticmethod
