@@ -11,8 +11,8 @@ class DownloadResponseManager:
     async def file_download_stream_message(file_model: FileModel, chunk_size: int = 4096):
 
         mime_type = file_model.mime_type
-        file_name = file_model.get_full_file_name()
-        file_size = await file_model.get_file_size()
+        file_name = file_model.get_file_name()
+        file_size = file_model.file_size
 
         header = ResponseHeaderHelper.append_content_length_by_file_size_on_headers(file_size, {})
 

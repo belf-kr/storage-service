@@ -2,7 +2,7 @@
   "APP_NAME": "STORAGE_SERVICE",
   "VERSION": "0.1.0",
   "HOST": "127.0.0.1",
-  "PORT": 8001,
+  "PORT": 3004,
   "SSL": "",
   "ACCESS_LOG": true
 }

@@ -35,9 +35,9 @@ class FileManager:
     async def create_file_model(file: File) -> FileModel:
         file_name, ext = os.path.splitext(file.name)
         return await FileModel.create(
-            file_name=file_name,
             ext=ext,
-            mime_type=FileManager.guess_mime_type_by_file_name(file.name)
+            mime_type=FileManager.guess_mime_type_by_file_name(file.name),
+            file_size=len(file.body)
         )
 
     @staticmethod
