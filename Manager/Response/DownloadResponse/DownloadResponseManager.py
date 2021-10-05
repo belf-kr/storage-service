@@ -1,6 +1,6 @@
 import base64
 
-from sanic.response import file_stream, html
+from sanic.response import file_stream, html, json
 
 from Manager.Response.ResponseHeaderHelper import ResponseHeaderHelper
 from Models.File import File as FileModel
@@ -47,7 +47,7 @@ class DownloadResponseManager:
         json_result = {
             "data": result
         }
-        return json_result
+        return json(json_result)
 
     '''
     Get file as html element from base64
