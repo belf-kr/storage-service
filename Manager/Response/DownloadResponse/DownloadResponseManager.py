@@ -45,7 +45,10 @@ class DownloadResponseManager:
     async def file_download_to_base64_message(file_model: FileModel):
         result = await DownloadResponseManager.get_base64_message_from_file(file_model)
         json_result = {
-            "data": result
+            "data": result,
+            "content-type": file_model.mime_type,
+            "Content-Disposition":
+                "attachment;" + "filename=" + file_model.get_file_name()
         }
         return json(json_result)
 
