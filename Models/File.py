@@ -1,5 +1,5 @@
-from tortoise.models import Model
 from tortoise.fields import CharField, UUIDField, DatetimeField, IntField
+from tortoise.models import Model
 
 from Common.CommonDefines import CommonDefines
 

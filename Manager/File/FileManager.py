@@ -1,13 +1,11 @@
 import mimetypes
 import os
 
-
 import aiofiles
-
 from sanic.request import File, Request
 
-from .FileErrorCode import FileErrorCode
 from Models.File import File as FileModel
+from .FileErrorCode import FileErrorCode
 
 
 class FileManager:
@@ -61,5 +59,3 @@ class FileManager:
             file_id = str(file_model.pk)
             request.app.add_task(FileManager.upload_file(file, file_id))
         return error_code, file_id
-
-

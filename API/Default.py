@@ -1,6 +1,6 @@
 from sanic import Blueprint
-from sanic_gzip import Compress
 from sanic.response import empty
+from sanic_gzip import Compress
 
 default = Blueprint(name="api_default", url_prefix="/default")
 compress = Compress()

@@ -1,7 +1,7 @@
-from pathlib import Path
+from os import mkdir
 from os import path
 from os.path import exists
-from os import mkdir
+from pathlib import Path
 
 
 class CommonDefines:

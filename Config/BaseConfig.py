@@ -2,7 +2,6 @@ from Common.CommonPath import CommonPath
 
 
 class BaseConfig:
-
     _instance = None
 
     def __init__(self):
@@ -15,4 +14,3 @@ class BaseConfig:
         if not cls._instance:
             cls._instance = BaseConfig()
         return cls._instance
-

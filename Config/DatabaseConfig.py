@@ -1,5 +1,6 @@
-from Config.BaseConfig import BaseConfig
 import json
+
+from Config.BaseConfig import BaseConfig
 
 
 class DatabaseConfig(BaseConfig):

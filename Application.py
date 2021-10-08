@@ -1,8 +1,3 @@
-from sanic.router import Router
-from sanic_cors import CORS
-
-from tortoise.contrib.sanic import register_tortoise
-
 from typing import (
     Optional,
     Callable,
@@ -17,23 +12,21 @@ from sanic import (
     Sanic,
     Request
 )
-
 from sanic.config import (
     Config,
     SANIC_PREFIX
 )
-
 from sanic.handlers import ErrorHandler
+from sanic.router import Router
 from sanic.signals import SignalRouter
-
-from Config.DatabaseConfig import DatabaseConfig
-from API import api
-
-from Config.ApplicationConfig import ApplicationConfig
-
-from Models import File
-
+from sanic_cors import CORS
 from tortoise import Model
+from tortoise.contrib.sanic import register_tortoise
+
+from API import api
+from Config.ApplicationConfig import ApplicationConfig
+from Config.DatabaseConfig import DatabaseConfig
+from Models import File
 
 
 class TortoiseRouter:

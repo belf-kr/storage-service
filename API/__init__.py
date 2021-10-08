@@ -1,8 +1,9 @@
 from sanic import Blueprint
-from .Download import download
-from .Upload import upload
-from .Information import information
+
 from .Default import default
+from .Download import download
+from .Information import information
+from .Upload import upload
 
 api = Blueprint.group(
     default,

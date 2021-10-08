@@ -1,10 +1,9 @@
 from uuid import UUID
 
 from sanic import Blueprint, json as sanic_json
-
-from Models.File import File as FileModel
 from sanic_gzip import Compress
 
+from Models.File import File as FileModel
 
 information = Blueprint(name="api_information", url_prefix="/info")
 compress = Compress()
