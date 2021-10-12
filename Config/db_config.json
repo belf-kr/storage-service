@@ -1,7 +1,7 @@
 {
-  "HOST": "127.0.0.1",
-  "PORT": 3306,
-  "DB": "belf",
-  "USER": "root",
-  "PASSWORD": "example"
+  "STORAGE_SERVICE_DB_HOST": "127.0.0.1",
+  "STORAGE_SERVICE_DB_PORT": 3306,
+  "STORAGE_SERVICE_DB_NAME": "belf",
+  "STORAGE_SERVICE_DB_USER": "root",
+  "STORAGE_SERVICE_DB_PASSWORD": "example"
 }
