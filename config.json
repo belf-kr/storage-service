@@ -1,0 +1,4 @@
+{
+  "APP_CONFIG_PATH": "Config/app_config.json",
+  "DB_CONFIG_PATH": "Config/db_config.json"
+}
