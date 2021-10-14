@@ -8,5 +8,5 @@ compress = Compress()
 
 @default.get("/ping")
 @compress.compress()
-async def getPing(_):
+async def get_ping(_):
     return empty(status=200)
