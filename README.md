@@ -78,3 +78,10 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 | STORAGE_SERVICE_DB_NAME     | ✅  |   🚫    |      belf       | belf                         | storage service가 실행될 때 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.               |
 | STORAGE_SERVICE_DB_USER     | ✅  |   🚫    |      root       | root                         | storage service가 실행될 때 접속할 `DB`의 `User Name` 설정을 위한 값입니다.             |
 | STORAGE_SERVICE_DB_PASSWORD | ✅  |   🚫    |     example     | example                      | storage service가 실행될 때 접속할 `DB`의 `User Password` 설정을 위한 값입니다.         |
+
+# K8S 서비스 환경 구성
+
+## Azure files 마운트
+
+K8S 클러스터 내부에서 프로젝트가 실행되는 base directory 하위에 ./upload 폴더를 생성 후 이를 Azure와 mount 하면 됩니다.
+예: ./upload/60d8e04e-38ef-4113-8fb9-322c9edb168b 형식으로 파일에 접근합니다.
