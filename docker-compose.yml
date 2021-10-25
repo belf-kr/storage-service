@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  storage-service:
+    build:
+      context: "./"
+      dockerfile: Dockerfile
+    image: "ghcr.io/belf-kr/storage-service"
+    container_name: "belf-storage-service"
+    environment:
+      - STORAGE_SERVICE_APP_NAME=STORAGE_SERVICE
+      - STORAGE_SERVICE_VERSION=0.1.0
+      - STORAGE_SERVICE_HOST=0.0.0.0
+      - STORAGE_SERVICE_PORT=3004
+      - STORAGE_SERVICE_ACCESS_LOG=true
+      - STORAGE_SERVICE_DB_HOST=host.docker.internal
+      - STORAGE_SERVICE_DB_PORT=3306
+      - STORAGE_SERVICE_DB_NAME=belf
+      - STORAGE_SERVICE_DB_USER=root
+      - STORAGE_SERVICE_DB_PASSWORD=example
+    ports:
+      - "3004:3004"
+    volumes:
+      - "./upload:/home/sanic/project/upload"
+    command: "python main.py"
