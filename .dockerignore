@@ -1,0 +1,7 @@
+.*/
+__pycache__
+upload/
+venv/
+Dockerfile
+README.md
+docker-compose.yml
