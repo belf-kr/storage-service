@@ -15,15 +15,15 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 2. Sanic web framework
 3. Tortoise ORM
 4. MySql:v5.7.16
-5. VSCode
-6. Pycharm
-7. docker
+5. VSCode(개발)
+6. Pycharm(개발)
+7. docker(개발, 테스트)
 
 > Belf 공식 개발 환경은 VSCode 이지만, 언어 특성상 편의를 위해 Pycharm을 사용 했습니다.
 > VSCode 실행도 별 문제 없음을 확인 했습니다.
 > 관련 내용은 빠른 시작 하위의 VSCode 부분을 참고하세요.
 >
-> 개발 OS로 Unix 계열인 MacOS, Linux 등을 추천하며 Windows 인 경우 WSL2 사용을 추천합니다.
+> 개발 OS로 Unix 계열인 MacOS, Linux 등을 추천하며 Windows 인 경우 WSL2 + VSCode 사용을 추천합니다.
 >
 > docker는 단순 테스트를 위한 Stack입니다. 실 서비스는 K8S 통해서 Azure 클라우드에서 제공됩니다.
 
@@ -63,21 +63,43 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 > Pycharm 개발 환경 상단의 View-Tool Windows-Python Console 을 클릭해서 python -version 등의 명령어로
 > Pycharm 에서 인식한 python 버전 및 python 명령어 경로를 확인할 수 있습니다.
 
+# Docker
+
+## 컨테이너 생성
+
+```
+docker-compose up -d
+```
+
+위의 명령어를 입력해 docker image 생성 후 컨테이너를 생성합니다.
+
+## 컨테이너 삭제
+
+```
+docker-compose down
+```
+
+위의 명령어를 입력해 컨테이너를 삭제합니다.
+
+## 환경변수
+
+**docker-compose.yml** 파일 내부의 **environment** 부분에 명시 되어있습니다.
+
 # 환경 변수
 
-| Variable                    | dev | qa/prod |     Default     | Example                      | Usage                                                                                   |
-| --------------------------- | :-: | :-----: | :-------------: | ---------------------------- | --------------------------------------------------------------------------------------- |
-| STORAGE_SERVICE_APP_NAME    | ✅  |   ✅    | STORAGE_SERVICE | STORAGE_SERVICE              | storage service의 `Application Name` 을 설정하는 값입니다.                              |
-| STORAGE_SERVICE_VERSION     | ✅  |   ✅    |       🤷‍♂️        | 0.1.1, 0.2.0                 | 실행 중인 storage service 서비스의 `Version`을 기입하는 값입니다.                       |
-| STORAGE_SERVICE_HOST        | ✅  |   🚫    |    127.0.0.1    | www.belf-storage-service.xyz | storage service 서비스가 실행될 `IP` 혹은 `URL`을 설정하기 위한 값입니다.               |
-| STORAGE_SERVICE_PORT        | ✅  |   🚫    |      3004       | 3004                         | storage service가 실행될 때 http 요청을 listen할 `Port`를 설정하기 위한 값입니다.       |
-| STORAGE_SERVICE_SSL         | 🚫  |   🚫    |       ""        | ""                           | storage service가 실행될 때 `SSL` 설정을 위한 값입니다.(미사용)                         |
-| STORAGE_SERVICE_ACCESS_LOG  | ✅  |   ✅    |      true       | true, false                  | storage service가 실행될 때 `Log` 사용 여부 설정을 위한 값입니다.                       |
-| STORAGE_SERVICE_DB_HOST     | ✅  |   🚫    |    127.0.0.1    | 127.0.0.1                    | storage servicer가 실행될 때 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다. |
-| STORAGE_SERVICE_DB_PORT     | ✅  |   🚫    |      3306       | 3306                         | storage service가 실행될 때 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.           |
-| STORAGE_SERVICE_DB_NAME     | ✅  |   🚫    |      belf       | belf                         | storage service가 실행될 때 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.               |
-| STORAGE_SERVICE_DB_USER     | ✅  |   🚫    |      root       | root                         | storage service가 실행될 때 접속할 `DB`의 `User Name` 설정을 위한 값입니다.             |
-| STORAGE_SERVICE_DB_PASSWORD | ✅  |   🚫    |     example     | example                      | storage service가 실행될 때 접속할 `DB`의 `User Password` 설정을 위한 값입니다.         |
+| Variable                    | dev | qa/prod |     Default     | Example                         | Usage                                                                                        |
+| --------------------------- | :-: | :-----: | :-------------: | ------------------------------- | -------------------------------------------------------------------------------------------- |
+| STORAGE_SERVICE_APP_NAME    | ✅  |   ✅    | STORAGE_SERVICE | STORAGE_SERVICE                 | storage service의 `Application Name` 을 설정하는 값입니다.                                   |
+| STORAGE_SERVICE_VERSION     | ✅  |   ✅    |       🤷‍♂️        | 0.1.1, 0.2.0                    | 실행 중인 storage service 서비스의 `Version`을 기입하는 값입니다.                            |
+| STORAGE_SERVICE_HOST        | ✅  |   🚫    |     0.0.0.0     | www.belf-storage-service.xyz    | storage service 서비스가 실행된 다음 `HTTP Listen` `IP` 혹은 `URL`을 설정하기 위한 값입니다. |
+| STORAGE_SERVICE_PORT        | ✅  |   🚫    |      3004       | 3004                            | storage service가 실행될 때 http 요청을 listen할 `Port`를 설정하기 위한 값입니다.            |
+| STORAGE_SERVICE_SSL         | 🚫  |   🚫    |       ""        | ""                              | storage service가 실행될 때 `SSL` 설정을 위한 값입니다.(미사용)                              |
+| STORAGE_SERVICE_ACCESS_LOG  | ✅  |   ✅    |      true       | true, false                     | storage service가 실행될 때 `Log` 사용 여부 설정을 위한 값입니다.                            |
+| STORAGE_SERVICE_DB_HOST     | ✅  |   🚫    |    127.0.0.1    | 127.0.0.1, host.docker.internal | storage servicer가 실행될 때 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.      |
+| STORAGE_SERVICE_DB_PORT     | ✅  |   🚫    |      3306       | 3306                            | storage service가 실행될 때 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                |
+| STORAGE_SERVICE_DB_NAME     | ✅  |   🚫    |      belf       | belf                            | storage service가 실행될 때 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                    |
+| STORAGE_SERVICE_DB_USER     | ✅  |   🚫    |      root       | root                            | storage service가 실행될 때 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                  |
+| STORAGE_SERVICE_DB_PASSWORD | ✅  |   🚫    |     example     | example                         | storage service가 실행될 때 접속할 `DB`의 `User Password` 설정을 위한 값입니다.              |
 
 # K8S 서비스 환경 구성
 
