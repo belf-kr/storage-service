@@ -87,19 +87,21 @@ docker-compose down
 
 # 환경 변수
 
-| Variable                    | dev | qa/prod |     Default     | Example                         | Usage                                                                                        |
-| --------------------------- | :-: | :-----: | :-------------: | ------------------------------- | -------------------------------------------------------------------------------------------- |
-| STORAGE_SERVICE_APP_NAME    | ✅  |   ✅    | STORAGE_SERVICE | STORAGE_SERVICE                 | storage service의 `Application Name` 을 설정하는 값입니다.                                   |
-| STORAGE_SERVICE_VERSION     | ✅  |   ✅    |       🤷‍♂️        | 0.1.1, 0.2.0                    | 실행 중인 storage service 서비스의 `Version`을 기입하는 값입니다.                            |
-| STORAGE_SERVICE_HOST        | ✅  |   🚫    |     0.0.0.0     | www.belf-storage-service.xyz    | storage service 서비스가 실행된 다음 `HTTP Listen` `IP` 혹은 `URL`을 설정하기 위한 값입니다. |
-| STORAGE_SERVICE_PORT        | ✅  |   🚫    |      3004       | 3004                            | storage service가 실행될 때 http 요청을 listen할 `Port`를 설정하기 위한 값입니다.            |
-| STORAGE_SERVICE_SSL         | 🚫  |   🚫    |       ""        | ""                              | storage service가 실행될 때 `SSL` 설정을 위한 값입니다.(미사용)                              |
-| STORAGE_SERVICE_ACCESS_LOG  | ✅  |   ✅    |      true       | true, false                     | storage service가 실행될 때 `Log` 사용 여부 설정을 위한 값입니다.                            |
-| STORAGE_SERVICE_DB_HOST     | ✅  |   🚫    |    127.0.0.1    | 127.0.0.1, host.docker.internal | storage servicer가 실행될 때 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.      |
-| STORAGE_SERVICE_DB_PORT     | ✅  |   🚫    |      3306       | 3306                            | storage service가 실행될 때 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                |
-| STORAGE_SERVICE_DB_NAME     | ✅  |   🚫    |      belf       | belf                            | storage service가 실행될 때 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                    |
-| STORAGE_SERVICE_DB_USER     | ✅  |   🚫    |      root       | root                            | storage service가 실행될 때 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                  |
-| STORAGE_SERVICE_DB_PASSWORD | ✅  |   🚫    |     example     | example                         | storage service가 실행될 때 접속할 `DB`의 `User Password` 설정을 위한 값입니다.              |
+| Variable                        | dev | qa/prod |     Default     | Example                         | Usage                                                                                     |
+| ------------------------------- | :-: | :-----: | :-------------: | ------------------------------- | ----------------------------------------------------------------------------------------- |
+| STORAGE_SERVICE_APP_NAME        | ✅  |   ✅    | STORAGE_SERVICE | STORAGE_SERVICE                 | storage service의 `Application Name` 을 설정하는 값입니다.                                |
+| STORAGE_SERVICE_VERSION         | ✅  |   ✅    |       🤷‍♂️        | 0.1.1, 0.2.0                    | 실행 중인 storage service 서비스의 `Version`을 기입하는 값입니다.                         |
+| STORAGE_SERVICE_HOST            | ✅  |   🚫    |     0.0.0.0     | www.belf-storage-service.xyz    | storage service가 실행된 다음 `HTTP Listen` `IP` 혹은 `URL`을 설정하기 위한 값입니다.     |
+| STORAGE_SERVICE_PORT            | ✅  |   🚫    |      3004       | 3004                            | storage service가 실행될 때 http 요청을 listen할 `Port`를 설정하기 위한 값입니다.         |
+| STORAGE_SERVICE_SSL             | 🚫  |   🚫    |       ""        | ""                              | storage service가 실행될 때 `SSL` 설정을 위한 값입니다.(미사용)                           |
+| STORAGE_SERVICE_ACCESS_LOG      | ✅  |   ✅    |      true       | true, false                     | storage service가 실행될 때 `Log` 사용 여부 설정을 위한 값입니다.                         |
+| STORAGE_SERVICE_UPLOAD_ABS_PATH | 🚫  |   ✅    |      false      | /mnt/mount/azure/files/storage  | storage service가 실행될 때 `Azure Files`와 `mount`될 `directory` 전체 경로를 지정합니다. |
+| UPLOAD_RELATIVE_PATH            | ✅  |   🚫    |      true       | /upload                         | storage service가 실행될 때 파일이 업로드 될 `directory` 상대 경로를 지정합니다.          |
+| STORAGE_SERVICE_DB_HOST         | ✅  |   🚫    |    127.0.0.1    | 127.0.0.1, host.docker.internal | storage service가 실행될 때 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.    |
+| STORAGE_SERVICE_DB_PORT         | ✅  |   🚫    |      3306       | 3306                            | storage service가 실행될 때 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.             |
+| STORAGE_SERVICE_DB_NAME         | ✅  |   🚫    |      belf       | belf                            | storage service가 실행될 때 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                 |
+| STORAGE_SERVICE_DB_USER         | ✅  |   🚫    |      root       | root                            | storage service가 실행될 때 접속할 `DB`의 `User Name` 설정을 위한 값입니다.               |
+| STORAGE_SERVICE_DB_PASSWORD     | ✅  |   🚫    |     example     | example                         | storage service가 실행될 때 접속할 `DB`의 `User Password` 설정을 위한 값입니다.           |
 
 # K8S 서비스 환경 구성
 

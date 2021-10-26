@@ -12,6 +12,7 @@ class CommonPath:
             self.common_defines = CommonDefines.get_instance()
             self.DB_CONFIG_ABS_PATH = self.common_defines.PROJECT_ABS_PATH + "/" + content["DB_CONFIG_PATH"]
             self.APP_CONFIG_ABS_PATH = self.common_defines.PROJECT_ABS_PATH + "/" + content["APP_CONFIG_PATH"]
+            self.UPLOAD_CONFIG_PATH = self.common_defines.PROJECT_ABS_PATH + "/" + content["UPLOAD_CONFIG_PATH"]
 
     @classmethod
     def get_instance(cls):
