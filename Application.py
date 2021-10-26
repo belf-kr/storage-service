@@ -57,7 +57,7 @@ class Application(Sanic):
         self.application_config = ApplicationConfig.get_instance()
 
         super().__init__(
-            name=self.application_config.STORAGE_SERVICE_APP_NAME,
+            name=self.application_config.APP_NAME,
             config=config,
             ctx=ctx,
             router=router,
@@ -77,8 +77,8 @@ class Application(Sanic):
         self.app_init()
         self.set_events()
         self.run(
-            host=self.application_config.STORAGE_SERVICE_HOST,
-            port=self.application_config.STORAGE_SERVICE_PORT,
+            host=self.application_config.HOST,
+            port=self.application_config.PORT,
             auto_reload=True
         )
 
