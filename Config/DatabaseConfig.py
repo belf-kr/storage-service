@@ -10,23 +10,29 @@ class DatabaseConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
+        self.DB_HOST = get_environment_variable("STORAGE_SERVICE_DB_HOST")
+        self.DB_PORT = get_environment_variable("STORAGE_SERVICE_DB_PORT")
+        self.DB_NAME = get_environment_variable("STORAGE_SERVICE_DB_NAME")
+        self.DB_USER = get_environment_variable("STORAGE_SERVICE_DB_USER")
+        self.DB_PASSWORD = get_environment_variable("STORAGE_SERVICE_DB_PASSWORD")
+
         with open(BaseConfig.get_instance().DB_CONFIG_PATH, "r") as f:
             content = json.load(f)
-            self.STORAGE_SERVICE_DB_HOST = get_environment_variable(
-                "STORAGE_SERVICE_DB_HOST") if get_environment_variable(
-                "STORAGE_SERVICE_DB_HOST") else content["STORAGE_SERVICE_DB_HOST"]
-            self.STORAGE_SERVICE_DB_PORT = int(get_environment_variable(
-                "STORAGE_SERVICE_DB_PORT")) if get_environment_variable(
-                "STORAGE_SERVICE_DB_PORT") else content["STORAGE_SERVICE_DB_PORT"]
-            self.STORAGE_SERVICE_DB_NAME = get_environment_variable(
-                "STORAGE_SERVICE_DB_NAME") if get_environment_variable(
-                "STORAGE_SERVICE_DB_NAME") else content["STORAGE_SERVICE_DB_NAME"]
-            self.STORAGE_SERVICE_DB_USER = get_environment_variable(
-                "STORAGE_SERVICE_DB_USER") if get_environment_variable(
-                "STORAGE_SERVICE_DB_USER") else content["STORAGE_SERVICE_DB_USER"]
-            self.STORAGE_SERVICE_DB_PASSWORD = get_environment_variable(
-                "STORAGE_SERVICE_DB_PASSWORD") if get_environment_variable("STORAGE_SERVICE_DB_PASSWORD") else content[
-                "STORAGE_SERVICE_DB_PASSWORD"]
+
+            if not self.DB_HOST:
+                self.DB_HOST = content["STORAGE_SERVICE_DB_HOST"]
+
+            if not self.DB_PORT:
+                self.DB_PORT = content["STORAGE_SERVICE_DB_PORT"]
+
+            if not self.DB_NAME:
+                self.DB_NAME = content["STORAGE_SERVICE_DB_NAME"]
+
+            if not self.DB_USER:
+                self.DB_USER = content["STORAGE_SERVICE_DB_USER"]
+
+            if not self.DB_PASSWORD:
+                self.DB_PASSWORD = content["STORAGE_SERVICE_DB_PASSWORD"]
 
     @classmethod
     def get_instance(cls):
@@ -36,17 +42,17 @@ class DatabaseConfig(BaseConfig):
 
     def convert_to_dictionary(self):
         return {
-            "host": self.STORAGE_SERVICE_DB_HOST,
-            "port": self.STORAGE_SERVICE_DB_PORT,
-            "db": self.STORAGE_SERVICE_DB_NAME,
-            "user": self.STORAGE_SERVICE_DB_USER,
-            "password": self.STORAGE_SERVICE_DB_PASSWORD
+            "host": self.DB_HOST,
+            "port": self.DB_PORT,
+            "db": self.DB_NAME,
+            "user": self.DB_USER,
+            "password": self.DB_PASSWORD
         }
 
     def get_connection_url(self):
         return f"mysql://" \
-               f"{self.STORAGE_SERVICE_DB_USER}:{self.STORAGE_SERVICE_DB_PASSWORD}" \
+               f"{self.DB_USER}:{self.DB_PASSWORD}" \
                f"@" \
-               f"{self.STORAGE_SERVICE_DB_HOST}:{self.STORAGE_SERVICE_DB_PORT}" \
+               f"{self.DB_HOST}:{self.DB_PORT}" \
                f"/" \
-               f"{self.STORAGE_SERVICE_DB_NAME}"
+               f"{self.DB_NAME}"
