@@ -8,6 +8,7 @@ class BaseConfig:
         self.COMMON_PATH = CommonPath.get_instance()
         self.DB_CONFIG_PATH = self.COMMON_PATH.DB_CONFIG_ABS_PATH
         self.APP_CONFIG_PATH = self.COMMON_PATH.APP_CONFIG_ABS_PATH
+        self.UPLOAD_CONFIG_PATH = self.COMMON_PATH.UPLOAD_CONFIG_PATH
 
     @classmethod
     def get_instance(cls):

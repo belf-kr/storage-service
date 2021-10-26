@@ -1,6 +1,4 @@
-from os import mkdir
 from os import path
-from os.path import exists
 from pathlib import Path
 
 
@@ -12,9 +10,6 @@ class CommonDefines:
 
         self.PROJECT_ABS_PATH = path.abspath(Path(__file__).parent.parent.absolute())
         self.CONFIG_ABS_PATH = self.PROJECT_ABS_PATH + "/config.json"
-        self.UPLOAD_PATH = self.PROJECT_ABS_PATH + "/upload"
-        if not exists(self.UPLOAD_PATH):
-            mkdir(self.UPLOAD_PATH)
 
     @classmethod
     def get_instance(cls):

@@ -1,7 +1,7 @@
 from tortoise.fields import CharField, UUIDField, DatetimeField, IntField
 from tortoise.models import Model
 
-from Common.CommonDefines import CommonDefines
+from Config.UploadConfig import UploadConfig
 
 
 class File(Model):
@@ -18,11 +18,11 @@ class File(Model):
         return str(self.id) + self.ext
 
     def get_file_path(self) -> str:
-        return f"{CommonDefines.get_instance().UPLOAD_PATH}/{self.pk}"
+        return f"{UploadConfig.get_instance().UPLOAD_ABS_PATH}/{self.pk}"
 
     @staticmethod
     def get_file_path_by_id(file_id: str):
-        return f"{CommonDefines.get_instance().UPLOAD_PATH}/{file_id}"
+        return f"{UploadConfig.get_instance().UPLOAD_ABS_PATH}/{file_id}"
 
     async def to_dict(self):
         return {
