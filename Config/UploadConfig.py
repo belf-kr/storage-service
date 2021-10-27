@@ -19,7 +19,7 @@ class UploadConfig:
             with open(BaseConfig.get_instance().UPLOAD_CONFIG_PATH, "r") as json_file:
                 content = json.load(json_file)
 
-                self.UPLOAD_ABS_PATH = CommonDefines.get_instance().PROJECT_ABS_PATH + content["UPLOAD_RELATIVE_PATH"]
+                self.UPLOAD_ABS_PATH = CommonDefines.get_instance().PROJECT_ABS_PATH + content["STORAGE_SERVICE_UPLOAD_RELATIVE_PATH"]
 
         if not exists(self.UPLOAD_ABS_PATH):
             mkdir(self.UPLOAD_ABS_PATH)
