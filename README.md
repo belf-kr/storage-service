@@ -8,7 +8,7 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 1. 실제 파일 데이터가 저장되는 경로
    1. dev
-      1. Pycharm, Visual Studio Code: 프로젝트 디렉토리 경로 + Config/upload_config.json 파일의 `UPLOAD_RELATIVE_PATH` 값
+      1. Pycharm, Visual Studio Code: 프로젝트 디렉토리 경로 + Config/upload_config.json 파일의 `STORAGE_SERVICE_UPLOAD_RELATIVE_PATH` 값
       2. docker: docker-compose.yml 내부의 `STORAGE_SERVICE_UPLOAD_ABS_PATH` 환경 변수 값
    2. QA/production
       1. K8S: STORAGE_SERVICE_UPLOAD_ABS_PATH 환경 변수 값
@@ -102,18 +102,18 @@ docker-compose down
 
 ### 환경 변수 표
 
-| Variable                        | dev | qa/prod |  Default value  | Example                         | Explanation                                                               |
-| ------------------------------- | :-: | :-----: | :-------------: | ------------------------------- | ------------------------------------------------------------------------- |
-| STORAGE_SERVICE_APP_NAME        | ✅  |   ✅    | STORAGE_SERVICE | STORAGE_SERVICE                 | `Application Name` 설정을 위한 값입니다.                                  |
-| STORAGE_SERVICE_VERSION         | ✅  |   ✅    |      0.1.0      | 0.1.1, 0.2.0                    | `Version`을 기입하는 값입니다.                                            |
-| STORAGE_SERVICE_HOST            | ✅  |   ✅    |     0.0.0.0     | www.belf-storage-service.xyz    | storage service가 받아들일 특정 `IP` 혹은 `URL`을 설정하기 위한 값입니다. |
-| STORAGE_SERVICE_PORT            | ✅  |   ✅    |      3004       | 3004                            | `HTTP listen port`를 설정하기 위한 값입니다.                              |
-| STORAGE_SERVICE_SSL             | 🚫  |   🚫    |       ""        |                                 | `SSL` 설정을 위한 값입니다.(미사용)                                       |
-| STORAGE_SERVICE_ACCESS_LOG      | ✅  |   ✅    |      true       | true, false                     | `Log` 사용 여부 설정을 위한 값입니다.                                     |
-| STORAGE_SERVICE_UPLOAD_ABS_PATH | 🚫  |   ✅    |                 | /mnt/mount/azure/files/storage  | `Azure Files`와 `mount`될 `directory` 전체 경로를 지정합니다.             |
-| UPLOAD_RELATIVE_PATH            | ✅  |   🚫    |     /upload     | /upload                         | 파일을 업로드 할 `project directory` 하위의 상대 경로를 지정합니다.       |
-| STORAGE_SERVICE_DB_HOST         | ✅  |   ✅    |    127.0.0.1    | 127.0.0.1, host.docker.internal | 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.                |
-| STORAGE_SERVICE_DB_PORT         | ✅  |   ✅    |      3306       | 3306                            | 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                         |
-| STORAGE_SERVICE_DB_NAME         | ✅  |   ✅    |      belf       | belf                            | 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                             |
-| STORAGE_SERVICE_DB_USER         | ✅  |   ✅    |      root       | root                            | 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                           |
-| STORAGE_SERVICE_DB_PASSWORD     | ✅  |   ✅    |     example     | example                         | 접속할 `DB`의 `User Password` 설정을 위한 값입니다.                       |
+| Variable                             | dev | qa/prod |  Default value  | Example                         | Explanation                                                               |
+| ------------------------------------ | :-: | :-----: | :-------------: | ------------------------------- | ------------------------------------------------------------------------- |
+| STORAGE_SERVICE_APP_NAME             | ✅  |   ✅    | STORAGE_SERVICE | STORAGE_SERVICE                 | `Application Name` 설정을 위한 값입니다.                                  |
+| STORAGE_SERVICE_VERSION              | ✅  |   ✅    |      0.1.0      | 0.1.1, 0.2.0                    | `Version`을 기입하는 값입니다.                                            |
+| STORAGE_SERVICE_HOST                 | ✅  |   ✅    |     0.0.0.0     | www.belf-storage-service.xyz    | storage service가 받아들일 특정 `IP` 혹은 `URL`을 설정하기 위한 값입니다. |
+| STORAGE_SERVICE_PORT                 | ✅  |   ✅    |      3004       | 3004                            | `HTTP listen port`를 설정하기 위한 값입니다.                              |
+| STORAGE_SERVICE_SSL                  | 🚫  |   🚫    |       ""        |                                 | `SSL` 설정을 위한 값입니다.(미사용)                                       |
+| STORAGE_SERVICE_ACCESS_LOG           | ✅  |   ✅    |      true       | true, false                     | `Log` 사용 여부 설정을 위한 값입니다.                                     |
+| STORAGE_SERVICE_UPLOAD_ABS_PATH      | 🚫  |   ✅    |                 | /mnt/mount/azure/files/storage  | `Azure Files`와 `mount`될 `directory` 전체 경로를 지정합니다.             |
+| STORAGE_SERVICE_UPLOAD_RELATIVE_PATH | ✅  |   🚫    |     /upload     | /upload                         | 파일을 업로드 할 `project directory` 하위의 상대 경로를 지정합니다.       |
+| STORAGE_SERVICE_DB_HOST              | ✅  |   ✅    |    127.0.0.1    | 127.0.0.1, host.docker.internal | 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.                |
+| STORAGE_SERVICE_DB_PORT              | ✅  |   ✅    |      3306       | 3306                            | 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                         |
+| STORAGE_SERVICE_DB_NAME              | ✅  |   ✅    |      belf       | belf                            | 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                             |
+| STORAGE_SERVICE_DB_USER              | ✅  |   ✅    |      root       | root                            | 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                           |
+| STORAGE_SERVICE_DB_PASSWORD          | ✅  |   ✅    |     example     | example                         | 접속할 `DB`의 `User Password` 설정을 위한 값입니다.                       |
