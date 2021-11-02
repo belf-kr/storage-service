@@ -20,6 +20,18 @@ docker-compose down
 
 위의 명령어를 입력해 컨테이너를 삭제합니다.
 
+### API 요청
+
+#### ping
+
+http://localhost:3000/storage/ping
+
+**API 서비스**를 로컬 개발환경에서 실행 후 **GET** 요청을 보내세요.
+
+#### 기타
+
+api-gateway 문서 내 File 하위 부분을 참고하세요
+
 #### 환경 변수
 
 **docker-compose.yml** 파일 내부의 **environment** 부분에 명시 되어있습니다.
