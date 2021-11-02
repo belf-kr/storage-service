@@ -1,5 +1,41 @@
 # Storage-service
 
+## 빠른 시작
+
+### Docker
+
+#### 컨테이너 생성
+
+```
+docker-compose up -d
+```
+
+위의 명령어를 입력해 docker image 생성 후 컨테이너를 생성합니다.
+
+### 컨테이너 삭제
+
+```
+docker-compose down
+```
+
+위의 명령어를 입력해 컨테이너를 삭제합니다.
+
+### API 요청
+
+#### ping
+
+http://localhost:3000/storage/ping
+
+**API 서비스**를 로컬 개발환경에서 실행 후 **GET** 요청을 보내세요.
+
+#### 기타
+
+api-gateway 문서 내 File 하위 부분을 참고하세요
+
+#### 환경 변수
+
+**docker-compose.yml** 파일 내부의 **environment** 부분에 명시 되어있습니다.
+
 ## 개요
 
 Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는 서비스입니다.
@@ -31,7 +67,7 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 >
 > docker는 단순 테스트를 위한 Stack입니다. 실 서비스는 K8S 통해서 Azure 클라우드에서 제공됩니다.
 
-## 빠른 시작
+## 시작
 
 ### 공통
 
@@ -64,28 +100,6 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 > Pycharm 개발 환경 상단의 View-Tool Windows-Python Console 을 클릭해서 python -version 등의 명령어로
 > Pycharm 에서 인식한 python 버전 및 python 명령어 경로를 확인할 수 있습니다.
-
-## Docker
-
-### 컨테이너 생성
-
-```
-docker-compose up -d
-```
-
-위의 명령어를 입력해 docker image 생성 후 컨테이너를 생성합니다.
-
-## 컨테이너 삭제
-
-```
-docker-compose down
-```
-
-위의 명령어를 입력해 컨테이너를 삭제합니다.
-
-### 환경 변수
-
-**docker-compose.yml** 파일 내부의 **environment** 부분에 명시 되어있습니다.
 
 ## 환경 변수
 
