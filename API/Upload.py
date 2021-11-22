@@ -28,13 +28,6 @@ async def file_patch(request: Request, file_id: UUID):
     ...
 
 
-@upload.delete("/<file_id:uuid>")
-@compress.compress()
-async def file_delete(request: Request, file_id: UUID):
-    # TODO : Need To Delete Func Impl
-    ...
-
-
 @upload.post('/background', stream=True)
 @compress.compress()
 async def file_stream_upload(request: Request):

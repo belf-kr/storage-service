@@ -1,9 +1,12 @@
 import mimetypes
 import os
+import uuid
 
 import aiofiles
+import aiofiles.os
 from sanic.request import File, Request
 
+from Common.UrlTool import get_query_string
 from Models.File import File as FileModel
 from .FileErrorCode import FileErrorCode
 
@@ -61,3 +64,23 @@ class FileManager:
             file_id = str(file_model.pk)
             request.app.add_task(FileManager.upload_file(file, file_id))
         return error_code, file_id
+
+    @staticmethod
+    async def delete_file_from_request(request: Request):
+        query_string = get_query_string(request)
+        user_id = query_string.get("userId")
+        file_id = query_string.get("fileId")
+
+        await FileManager.delete_file_model(file_id, user_id)
+        await FileManager.delete_file(file_id)
+
+    @staticmethod
+    async def delete_file_model(file_id: uuid, user_id: int):
+        model_to_delete = await FileModel.get(id=file_id, user_id=user_id)
+        await model_to_delete.delete()
+
+    @staticmethod
+    async def delete_file(file_id: uuid):
+        file_path = FileModel.get_file_path_by_id(file_id)
+
+        await aiofiles.os.remove(file_path)
