@@ -71,7 +71,7 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 ### 공통
 
-1. Belf 프로젝트인 todo-service 내부의 docker/mysql/README.md 파일을 참고해 개발용 DB를 구성합니다.
+1. oauth 서비스의 `mysql` 서비스를 구동하거나, `docker-compose.yml` 파일에서 `mysql` 서비스만 구동해 DB를 띄워두세요.
 
 ### VSCode
 
@@ -127,7 +127,7 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 | STORAGE_SERVICE_UPLOAD_ABS_PATH      | 🚫  |   ✅    |                 | /mnt/mount/azure/files/storage  | `Azure Files`와 `mount`될 `directory` 전체 경로를 지정합니다.             |
 | STORAGE_SERVICE_UPLOAD_RELATIVE_PATH | ✅  |   🚫    |     /upload     | /upload                         | 파일을 업로드 할 `project directory` 하위의 상대 경로를 지정합니다.       |
 | STORAGE_SERVICE_DB_HOST              | ✅  |   ✅    |    127.0.0.1    | 127.0.0.1, host.docker.internal | 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.                |
-| STORAGE_SERVICE_DB_PORT              | ✅  |   ✅    |      3306       | 3306                            | 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                         |
+| STORAGE_SERVICE_DB_PORT              | ✅  |   ✅    |      3306       | 3306, 3307                      | 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                         |
 | STORAGE_SERVICE_DB_NAME              | ✅  |   ✅    |      belf       | belf                            | 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                             |
 | STORAGE_SERVICE_DB_USER              | ✅  |   ✅    |      root       | root                            | 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                           |
 | STORAGE_SERVICE_DB_PASSWORD          | ✅  |   ✅    |     example     | example                         | 접속할 `DB`의 `User Password` 설정을 위한 값입니다.                       |
