@@ -1,4 +1,5 @@
 from sanic import Blueprint, Request
+from sanic.response import empty
 from sanic_gzip import Compress
 
 from Manager.File.FileManager import FileManager
@@ -12,5 +13,4 @@ compress = Compress()
 async def file_delete(request: Request):
     await FileManager.delete_file_from_request(request)
 
-    # TODO: HTTP status 코드 처리
-    return
+    return empty(status=200)
