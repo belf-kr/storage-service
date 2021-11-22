@@ -10,6 +10,7 @@ class File(Model):
     mime_type = CharField(max_length=100, null=False)
     last_update_datetime = DatetimeField(auto_now=True)
     file_size = IntField()
+    user_id = IntField()
 
     class Meta:
         tablename = "file"
@@ -31,5 +32,6 @@ class File(Model):
             "full_name": self.get_file_name(),
             "mime_type": self.mime_type,
             "last_update": str(self.last_update_datetime),
-            "file_size": self.file_size
+            "file_size": self.file_size,
+            "user_id": self.user_id
         }
