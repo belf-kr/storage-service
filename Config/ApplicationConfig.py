@@ -12,7 +12,7 @@ class ApplicationConfig:
 
         self.APP_NAME = "STORAGE_SERVICE"
         self.VERSION = "0.1.0"
-        self.HOST = get_environment_variable("STORAGE_SERVICE_HOST")
+        self.HOST = "0.0.0.0"
         self.PORT = get_environment_variable("STORAGE_SERVICE_PORT")
         self.ACCESS_LOG = bool(get_environment_variable("STORAGE_SERVICE_ACCESS_LOG"))
 
