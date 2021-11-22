@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: oauth-server
+  name: storage-service
   namespace: test
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: oauth-server
+      app: storage-service
   template:
     metadata:
       labels:
-        app: oauth-server
+        app: storage-service
     spec:
       containers:
-        - name: oauth-server
-          image: ghcr.io/belf-kr/oauth-server/gin
+        - name: storage-service
+          image: ghcr.io/belf-kr/storage-service/sanic
           imagePullPolicy: "Always"
           ports:
-            - containerPort: 8080
+            - containerPort: 8000
           resources:
             requests:
               cpu: 100m
@@ -30,11 +30,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: oauth-server
+  name: storage-service
   namespace: test
 spec:
   type: ClusterIP
   ports:
-    - port: 8080
+    - port: 8000
   selector:
-    app: oauth-server
+    app: storage-service

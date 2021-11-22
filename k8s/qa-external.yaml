@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: external-qa-oauth-server
+  name: external-qa-storage-service
   namespace: ingress-basic
 spec:
   type: ExternalName
-  externalName: oauth-server.qa
+  externalName: storage-service.qa
