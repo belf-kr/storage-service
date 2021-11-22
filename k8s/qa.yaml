@@ -26,6 +26,9 @@ spec:
             limits:
               cpu: 5m
               memory: 100Mi
+          volumeMounts:
+            - name: upload
+              mountPath: /mnt/mount/azure/files/storage
           env:
             - name: STAGES
               valueFrom:
@@ -33,23 +36,14 @@ spec:
                   name: qa-config
                   key: STAGES
 
-            - name: STORAGE_SERVICE_APP_NAME
-              value: "STORAGE_SERVICE"
-
-            - name: STORAGE_SERVICE_VERSION
-              value: "0.1.0"
-
-            - name: STORAGE_SERVICE_HOST
-              value: "0.0.0.0"
-
-            - name: STORAGE_SERVICE_PORT
-              value: "8000"
+            - name: STORAGE_SERVICE_IS_PROD
+              value: "true"
 
             - name: STORAGE_SERVICE_ACCESS_LOG
               value: "true"
 
             - name: STORAGE_SERVICE_UPLOAD_PATH
-              value: "/home/sanic/project/upload"
+              value: "/mnt/mount/azure/files/storage"
 
             - name: STORAGE_SERVICE_DB_HOST
               valueFrom:
@@ -80,6 +74,9 @@ spec:
                 configMapKeyRef:
                   name: qa-config
                   key: DB_MASTER_DATABASE
+      volumes:
+        - name: upload
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
