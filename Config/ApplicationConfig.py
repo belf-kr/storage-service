@@ -10,20 +10,14 @@ class ApplicationConfig:
     def __init__(self):
         super().__init__()
 
-        self.APP_NAME = get_environment_variable("STORAGE_SERVICE_APP_NAME")
-        self.VERSION = get_environment_variable("STORAGE_SERVICE_VERSION")
+        self.APP_NAME = "STORAGE_SERVICE"
+        self.VERSION = "0.1.0"
         self.HOST = get_environment_variable("STORAGE_SERVICE_HOST")
         self.PORT = get_environment_variable("STORAGE_SERVICE_PORT")
         self.ACCESS_LOG = bool(get_environment_variable("STORAGE_SERVICE_ACCESS_LOG"))
 
         with open(BaseConfig.get_instance().APP_CONFIG_PATH, "r") as json_file:
             content = json.load(json_file)
-
-            if not self.APP_NAME:
-                self.APP_NAME = content["STORAGE_SERVICE_APP_NAME"]
-
-            if not self.VERSION:
-                self.VERSION = content["STORAGE_SERVICE_VERSION"]
 
             if not self.HOST:
                 self.HOST = content["STORAGE_SERVICE_HOST"]
