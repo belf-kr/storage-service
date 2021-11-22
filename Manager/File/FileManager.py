@@ -30,12 +30,13 @@ class FileManager:
         return FileErrorCode.ERROR_SUCCESS
 
     @staticmethod
-    async def create_file_model(file: File) -> FileModel:
+    async def create_file_model(file: File, user_id: int) -> FileModel:
         file_name, ext = os.path.splitext(file.name)
         return await FileModel.create(
             ext=ext,
             mime_type=FileManager.guess_mime_type_by_file_name(file.name),
-            file_size=len(file.body)
+            file_size=len(file.body),
+            user_id=user_id
         )
 
     @staticmethod
@@ -51,11 +52,12 @@ class FileManager:
 
     @staticmethod
     async def upload_file_from_request(request: Request, file_key: str) -> tuple[FileErrorCode, str]:
+        user_id = request.form.get("userId")
         error_code = FileManager.validate_files(request.files)
         file_id: str = ""
         if error_code == FileErrorCode.ERROR_SUCCESS:
             file: File = request.files.get(file_key)
-            file_model = await FileManager.create_file_model(file)
+            file_model = await FileManager.create_file_model(file, user_id)
             file_id = str(file_model.pk)
             request.app.add_task(FileManager.upload_file(file, file_id))
         return error_code, file_id
