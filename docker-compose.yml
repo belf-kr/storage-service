@@ -36,4 +36,3 @@ services:
       - "3004:8000"
     volumes:
       - "./upload:/home/sanic/project/upload"
-    command: "python main.py"
