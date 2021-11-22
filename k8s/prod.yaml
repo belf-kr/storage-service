@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-service
+  namespace: prod
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: storage-service
+  template:
+    metadata:
+      labels:
+        app: storage-service
+    spec:
+      containers:
+        - name: storage-service
+          image: ghcr.io/belf-kr/storage-service/sanic
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 5m
+              memory: 100Mi
+            limits:
+              cpu: 5m
+              memory: 100Mi
+          env:
+            - name: STAGES
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: STAGES
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-service
+  namespace: prod
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+  selector:
+    app: storage-service
