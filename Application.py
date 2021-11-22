@@ -7,6 +7,7 @@ from typing import (
     Dict
 )
 
+import aerich
 import uvloop
 from sanic import (
     Sanic,
@@ -111,7 +112,7 @@ class Application(Sanic):
             },
             "apps": {
                 "models": {
-                    "models": [File],
+                    "models": [File, aerich.models],
                     "default_connection": "master",
                 }
             },
