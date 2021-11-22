@@ -32,6 +32,54 @@ spec:
                 configMapKeyRef:
                   name: qa-config
                   key: STAGES
+
+            - name: STORAGE_SERVICE_APP_NAME
+              value: "STORAGE_SERVICE"
+
+            - name: STORAGE_SERVICE_VERSION
+              value: "0.1.0"
+
+            - name: STORAGE_SERVICE_HOST
+              value: "0.0.0.0"
+
+            - name: STORAGE_SERVICE_PORT
+              value: "8000"
+
+            - name: STORAGE_SERVICE_ACCESS_LOG
+              value: "true"
+
+            - name: STORAGE_SERVICE_UPLOAD_PATH
+              value: "/home/sanic/project/upload"
+
+            - name: STORAGE_SERVICE_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_HOST
+
+            - name: STORAGE_SERVICE_DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_PORT
+
+            - name: STORAGE_SERVICE_DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_USERNAME
+
+            - name: STORAGE_SERVICE_DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_PASSWORD
+
+            - name: STORAGE_SERVICE_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_DATABASE
 ---
 apiVersion: v1
 kind: Service
