@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE_HOST: ghcr.io/${{ github.repository }}
-  IMAGE_NAME: gin
+  IMAGE_NAME: sanic
   IMAGE_TAG: ${{ github.sha }}
   NAMESPACE: qa
 
