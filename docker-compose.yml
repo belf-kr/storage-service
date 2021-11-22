@@ -5,7 +5,7 @@ services:
     build:
       context: ./docker/mysql
       dockerfile: Dockerfile
-    image: belf-mysql
+    image: belf-storage-mysql
     container_name: mysql-storage-dev
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
@@ -16,6 +16,8 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
   storage-service:
+    depends_on:
+      - mysql
     build:
       context: "./"
       dockerfile: Dockerfile
