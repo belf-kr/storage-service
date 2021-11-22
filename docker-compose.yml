@@ -29,7 +29,7 @@ services:
       - STORAGE_SERVICE_HOST=0.0.0.0
       - STORAGE_SERVICE_PORT=3004
       - STORAGE_SERVICE_ACCESS_LOG=true
-      - STORAGE_SERVICE_UPLOAD_ABS_PATH=/home/sanic/project/upload
+      - STORAGE_SERVICE_UPLOAD_PATH=/home/sanic/project/upload
       - STORAGE_SERVICE_DB_HOST=host.docker.internal
       - STORAGE_SERVICE_DB_PORT=3307
       - STORAGE_SERVICE_DB_NAME=belf
