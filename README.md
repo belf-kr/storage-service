@@ -118,7 +118,8 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 | Variable                    | dev | qa/prod | Default value | Example                                 | Explanation                                                                                 |
 | --------------------------- | :-: | :-----: | :-----------: | --------------------------------------- | ------------------------------------------------------------------------------------------- |
-| STORAGE_SERVICE_PORT        | ✅  |   ✅    |     3004      | 3004                                    | `HTTP listen port`를 설정하기 위한 값입니다.                                                |
+| STORAGE_SERVICE_IS_PROD     | 🚫  |   ✅    |               | true                                    | `K8S` 배포 환경인지 구분하기 위한 값입니다.                                                 |
+| STORAGE_SERVICE_PORT        | ✅  |   🚫    |     8000      | 8000, 3004                              | `HTTP listen port`를 설정하기 위한 값입니다.                                                |
 | STORAGE_SERVICE_SSL         | 🚫  |   🚫    |      ""       |                                         | `SSL` 설정을 위한 값입니다.(미사용)                                                         |
 | STORAGE_SERVICE_ACCESS_LOG  | ✅  |   ✅    |     true      | true, false                             | `Log` 사용 여부 설정을 위한 값입니다.                                                       |
 | STORAGE_SERVICE_UPLOAD_PATH | ✅  |   ✅    |    /upload    | /upload, /mnt/mount/azure/files/storage | 로컬 개발환경용 `상대경로나`, `Azure Files`와 `mount`될 `directory` 전체 경로를 입력합니다. |

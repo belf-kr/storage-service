@@ -24,7 +24,7 @@ services:
     image: "jp3pe/belf-kr/storage-service"
     container_name: "belf-storage-service"
     environment:
-      - STORAGE_SERVICE_PORT=8000
+      - STORAGE_SERVICE_IS_PROD=true
       - STORAGE_SERVICE_ACCESS_LOG=true
       - STORAGE_SERVICE_UPLOAD_PATH=/home/sanic/project/upload
       - STORAGE_SERVICE_DB_HOST=host.docker.internal
