@@ -10,28 +10,20 @@ class DatabaseConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
-        self.DB_HOST = get_environment_variable("STORAGE_SERVICE_DB_HOST")
-        self.DB_PORT = get_environment_variable("STORAGE_SERVICE_DB_PORT")
-        self.DB_NAME = get_environment_variable("STORAGE_SERVICE_DB_NAME")
-        self.DB_USER = get_environment_variable("STORAGE_SERVICE_DB_USER")
-        self.DB_PASSWORD = get_environment_variable("STORAGE_SERVICE_DB_PASSWORD")
+        if get_environment_variable("STORAGE_SERVICE_IS_PROD"):
+            self.DB_HOST = get_environment_variable("STORAGE_SERVICE_DB_HOST")
+            self.DB_PORT = get_environment_variable("STORAGE_SERVICE_DB_PORT")
+            self.DB_NAME = get_environment_variable("STORAGE_SERVICE_DB_NAME")
+            self.DB_USER = get_environment_variable("STORAGE_SERVICE_DB_USER")
+            self.DB_PASSWORD = get_environment_variable("STORAGE_SERVICE_DB_PASSWORD")
+        else:
+            with open(BaseConfig.get_instance().DB_CONFIG_PATH, "r") as f:
+                content = json.load(f)
 
-        with open(BaseConfig.get_instance().DB_CONFIG_PATH, "r") as f:
-            content = json.load(f)
-
-            if not self.DB_HOST:
                 self.DB_HOST = content["STORAGE_SERVICE_DB_HOST"]
-
-            if not self.DB_PORT:
                 self.DB_PORT = content["STORAGE_SERVICE_DB_PORT"]
-
-            if not self.DB_NAME:
                 self.DB_NAME = content["STORAGE_SERVICE_DB_NAME"]
-
-            if not self.DB_USER:
                 self.DB_USER = content["STORAGE_SERVICE_DB_USER"]
-
-            if not self.DB_PASSWORD:
                 self.DB_PASSWORD = content["STORAGE_SERVICE_DB_PASSWORD"]
 
     @classmethod
