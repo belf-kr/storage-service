@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-service
+  namespace: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: storage-service
+  template:
+    metadata:
+      labels:
+        app: storage-service
+    spec:
+      containers:
+        - name: storage-service
+          image: ghcr.io/belf-kr/storage-service/sanic
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+            limits:
+              cpu: 10m
+              memory: 100Mi
+          volumeMounts:
+            - name: static-files-volume
+              mountPath: /mnt/azure
+          env:
+            - name: STAGES
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: STAGES
+
+            - name: STORAGE_SERVICE_IS_PROD
+              value: "true"
+
+            - name: STORAGE_SERVICE_ACCESS_LOG
+              value: "true"
+
+            - name: STORAGE_SERVICE_UPLOAD_PATH
+              value: "/mnt/azure"
+
+            - name: STORAGE_SERVICE_DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: DB_MASTER_HOST
+
+            - name: STORAGE_SERVICE_DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: DB_MASTER_PORT
+
+            - name: STORAGE_SERVICE_DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: DB_MASTER_USERNAME
+
+            - name: STORAGE_SERVICE_DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: DB_MASTER_PASSWORD
+
+            - name: STORAGE_SERVICE_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: prod-config
+                  key: DB_MASTER_DATABASE
+      volumes:
+        - name: static-files-volume
+          persistentVolumeClaim:
+            claimName: storage-service-static-files
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-service
+  namespace: prod
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+  selector:
+    app: storage-service

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-service
+  namespace: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: storage-service
+  template:
+    metadata:
+      labels:
+        app: storage-service
+    spec:
+      containers:
+        - name: storage-service
+          image: ghcr.io/belf-kr/storage-service/sanic
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-service
+  namespace: test
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+  selector:
+    app: storage-service

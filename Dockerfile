@@ -12,3 +12,5 @@ COPY . .
 RUN pip install -r requirements.txt
 
 EXPOSE 3004
+
+CMD ["python", "main.py"]
