@@ -4,7 +4,7 @@ metadata:
   name: storage-service
   namespace: qa
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: storage-service
@@ -21,14 +21,14 @@ spec:
             - containerPort: 8000
           resources:
             requests:
-              cpu: 5m
+              cpu: 10m
               memory: 100Mi
             limits:
-              cpu: 5m
+              cpu: 10m
               memory: 100Mi
           volumeMounts:
-            - name: upload
-              mountPath: /mnt/mount/azure/files/storage
+            - name: static-files-volume
+              mountPath: /mnt/azure
           env:
             - name: STAGES
               valueFrom:
@@ -43,7 +43,7 @@ spec:
               value: "true"
 
             - name: STORAGE_SERVICE_UPLOAD_PATH
-              value: "/mnt/mount/azure/files/storage"
+              value: "/mnt/azure"
 
             - name: STORAGE_SERVICE_DB_HOST
               valueFrom:
@@ -75,8 +75,9 @@ spec:
                   name: qa-config
                   key: DB_MASTER_DATABASE
       volumes:
-        - name: upload
-          emptyDir: {}
+        - name: static-files-volume
+          persistentVolumeClaim:
+            claimName: storage-service-static-files
 ---
 apiVersion: v1
 kind: Service
