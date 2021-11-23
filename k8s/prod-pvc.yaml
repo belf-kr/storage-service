@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: prod-files
+  name: storage-service-static-files
   namespace: prod
 spec:
   accessModes:

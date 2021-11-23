@@ -41,6 +41,13 @@ jobs:
         run: |
           kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
 
+      - name: aks apply pvc
+        uses: Azure/k8s-deploy@v1.4
+        with:
+          namespace: ${{ env.NAMESPACE }}
+          manifests: |
+            ./k8s/qa-pvc.yaml
+
       - name: aks apply object
         uses: Azure/k8s-deploy@v1.4
         with:
