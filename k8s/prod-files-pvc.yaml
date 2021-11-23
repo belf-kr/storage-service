@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prod-files
+  namespace: prod
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: belf-azurefiles
+  resources:
+    requests:
+      storage: 1Gi
