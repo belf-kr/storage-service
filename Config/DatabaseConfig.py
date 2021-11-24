@@ -16,6 +16,7 @@ class DatabaseConfig(BaseConfig):
             self.DB_NAME = get_environment_variable("STORAGE_SERVICE_DB_NAME")
             self.DB_USER = get_environment_variable("STORAGE_SERVICE_DB_USER")
             self.DB_PASSWORD = get_environment_variable("STORAGE_SERVICE_DB_PASSWORD")
+
         else:
             with open(BaseConfig.get_instance().DB_CONFIG_PATH, "r") as f:
                 content = json.load(f)
