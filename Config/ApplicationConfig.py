@@ -11,7 +11,7 @@ class ApplicationConfig:
         super().__init__()
 
         self.APP_NAME = "STORAGE_SERVICE"
-        self.VERSION = "0.1.0"
+        self.VERSION = "0.1.2"
         self.HOST = "0.0.0.0"
         if bool(get_environment_variable("STORAGE_SERVICE_IS_PROD")):
             self.PORT = 8000
