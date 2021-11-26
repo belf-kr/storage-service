@@ -23,8 +23,8 @@ spec:
             httpGet:
               path: /api/v1/default/ping
               port: 8000
-            #
-            initialDelaySeconds: 50
+            # 서버가 기본적으로 올라가는데 시간이 걸려서 일정 시간 기달리도록 합니다.
+            initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /api/v1/default/ping
