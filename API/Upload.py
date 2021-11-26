@@ -6,7 +6,9 @@ from sanic.response import empty, json
 from sanic_gzip import Compress
 
 import API
+from Common.Request import Headers
 from Manager.File.FileManager import FileManager
+from MiddleWare.Authorization import JsonWebToken
 
 upload = Blueprint(name="api_upload", url_prefix="/upload")
 compress = Compress()
@@ -14,13 +16,15 @@ compress = Compress()
 
 @upload.post("/")
 @compress.compress()
+@JsonWebToken.only_validated()
 async def file_upload(request: Request):
     """
     Upload physical and logical single file data
     :param request:
     :return:
     """
-    user_id = request.form.get("userId")
+    payload = JsonWebToken.get_payload(request.headers.get(Headers.AUTHORIZATION.value))
+    user_id = payload.get('user_id')
 
     if not user_id:
         return empty(status=HTTPStatus.BAD_REQUEST)
