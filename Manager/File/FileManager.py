@@ -55,7 +55,7 @@ class FileManager:
     @staticmethod
     async def upload_file(file: File, file_id: str) -> None:
         """
-        upload ㅔ
+        upload
         :param file:
         :param file_id:
         :return:
