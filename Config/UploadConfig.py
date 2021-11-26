@@ -1,10 +1,8 @@
 import json
-from os import mkdir
-from os.path import exists
+import os
+from os import mkdir, getenv
 
-from Common.CommonDefines import CommonDefines
-from Config.BaseConfig import BaseConfig
-from Config.EnvironmentConfig import get_environment_variable
+from Common import path
 
 
 class UploadConfig:
@@ -13,16 +11,14 @@ class UploadConfig:
     def __init__(self):
         super().__init__()
 
-        self.UPLOAD_ABS_PATH = get_environment_variable("STORAGE_SERVICE_UPLOAD_PATH")
+        self.UPLOAD_ABS_PATH = getenv("STORAGE_SERVICE_UPLOAD_PATH")
 
         if not self.UPLOAD_ABS_PATH:
-            with open(BaseConfig.get_instance().UPLOAD_CONFIG_PATH, "r") as json_file:
+            with open(path.UPLOAD_CONFIG_ABS_PATH, "r") as json_file:
                 content = json.load(json_file)
+                self.UPLOAD_ABS_PATH = f"{path.PROJECT_ABS_PATH}{content['STORAGE_SERVICE_UPLOAD_PATH']}"
 
-                self.UPLOAD_ABS_PATH = CommonDefines.get_instance().PROJECT_ABS_PATH + content[
-                    "STORAGE_SERVICE_UPLOAD_PATH"]
-
-        if not exists(self.UPLOAD_ABS_PATH):
+        if not os.path.exists(self.UPLOAD_ABS_PATH):
             mkdir(self.UPLOAD_ABS_PATH)
 
     @classmethod

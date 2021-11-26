@@ -1,24 +1,24 @@
 import json
 
-from Config.BaseConfig import BaseConfig
-from Config.EnvironmentConfig import get_environment_variable
+from Common import path
+from os import getenv
 
 
-class DatabaseConfig(BaseConfig):
+class DatabaseConfig:
     _instance = None
 
     def __init__(self):
         super().__init__()
 
-        if get_environment_variable("STORAGE_SERVICE_IS_PROD"):
-            self.DB_HOST = get_environment_variable("STORAGE_SERVICE_DB_HOST")
-            self.DB_PORT = get_environment_variable("STORAGE_SERVICE_DB_PORT")
-            self.DB_NAME = get_environment_variable("STORAGE_SERVICE_DB_NAME")
-            self.DB_USER = get_environment_variable("STORAGE_SERVICE_DB_USER")
-            self.DB_PASSWORD = get_environment_variable("STORAGE_SERVICE_DB_PASSWORD")
+        if getenv("STORAGE_SERVICE_IS_PROD"):
+            self.DB_HOST = getenv("STORAGE_SERVICE_DB_HOST")
+            self.DB_PORT = getenv("STORAGE_SERVICE_DB_PORT")
+            self.DB_NAME = getenv("STORAGE_SERVICE_DB_NAME")
+            self.DB_USER = getenv("STORAGE_SERVICE_DB_USER")
+            self.DB_PASSWORD = getenv("STORAGE_SERVICE_DB_PASSWORD")
 
         else:
-            with open(BaseConfig.get_instance().DB_CONFIG_PATH, "r") as f:
+            with open(path.DB_CONFIG_ABS_PATH, "r") as f:
                 content = json.load(f)
 
                 self.DB_HOST = content["STORAGE_SERVICE_DB_HOST"]
