@@ -15,6 +15,9 @@ class FileModel(Model):
     file_size = IntField()
     user_id = IntField()
 
+    class Meta:
+        tablename = "file"
+
     def get_file_name(self) -> str:
         """
         Get file name
