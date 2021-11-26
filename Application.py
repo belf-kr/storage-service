@@ -27,7 +27,6 @@ from TortoiseRouter import TortoiseRouter
 from API import api
 from Config.ApplicationConfig import ApplicationConfig
 from Config.DatabaseConfig import DatabaseConfig
-from Models import FileModel
 
 
 class Application(Sanic):
@@ -86,7 +85,7 @@ class Application(Sanic):
             },
             "apps": {
                 "models": {
-                    "models": [FileModel, aerich.models],
+                    "models": ["Models.FileModel", aerich.models],
                     "default_connection": "master",
                 }
             },
