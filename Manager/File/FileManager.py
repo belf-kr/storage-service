@@ -10,6 +10,7 @@ from tortoise.exceptions import OperationalError
 from Config.UploadConfig import UploadConfig
 from Models.FileModel import FileModel
 from .FileErrorCode import FileErrorCode
+from tortoise.exceptions import DoesNotExist
 
 
 class FileManager:
@@ -74,12 +75,15 @@ class FileManager:
         :return:
         """
         error_code = FileErrorCode.ERROR_SUCCESS
-        model_to_delete = await FileModel.get(id=file_id, user_id=user_id)
-        if model_to_delete:
-            try:
-                await model_to_delete.delete()
-            except OperationalError:
-                error_code = FileErrorCode.ERROR_OPERATION
+        try:
+            model_to_delete = await FileModel.get(id=file_id, user_id=user_id)
+            if model_to_delete:
+                try:
+                    await model_to_delete.delete()
+                except OperationalError:
+                    error_code = FileErrorCode.ERROR_OPERATION
+        except DoesNotExist:
+            error_code = FileErrorCode.ERROR_NOT_EXIST
 
         return error_code
 
