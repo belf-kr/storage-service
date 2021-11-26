@@ -4,7 +4,7 @@ metadata:
   name: storage-service
   namespace: qa
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: storage-service
@@ -19,14 +19,6 @@ spec:
           imagePullPolicy: "Always"
           ports:
             - containerPort: 8000
-          livenessProbe:
-            httpGet:
-              path: /api/v1/default/ping
-              port: 8000
-          readinessProbe:
-            httpGet:
-              path: /api/v1/default/ping
-              port: 8000
           resources:
             requests:
               cpu: 10m
