@@ -1,10 +1,10 @@
 from tortoise.fields import CharField, UUIDField, DatetimeField, IntField
-from tortoise.models import Model as BaseModel
+from tortoise.models import Model
 
-from Config.UploadConfig import UploadConfig
+from Config import upload
 
 
-class FileModel(BaseModel):
+class FileModel(Model):
     """
     ORM File Model
     """
@@ -27,7 +27,7 @@ class FileModel(BaseModel):
         Get abs file path
         :return: string
         """
-        return f"{UploadConfig.get_instance().UPLOAD_ABS_PATH}/{self.pk}"
+        return f"{upload.UPLOAD_ABS_PATH}/{self.pk}"
 
     def to_dict(self) -> dict:
         return {

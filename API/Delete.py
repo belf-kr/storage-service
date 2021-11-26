@@ -4,9 +4,10 @@ from sanic import Blueprint, Request
 from sanic.response import empty, json
 from sanic_gzip import Compress
 
-from Common.Converter import Converter
+from Common import converter
 
-from Manager.File.FileManager import FileManager
+from Manager import FileManager
+
 
 delete = Blueprint(name="api_delete", url_prefix="/delete")
 compress = Compress()
@@ -20,7 +21,7 @@ async def file_delete(request: Request):
     :param request:
     :return:
     """
-    query_string = Converter.query_string_to_dict(request.query_string)
+    query_string = converter.query_string_to_dict(request.query_string)
 
     user_id = query_string.get("userId")
     file_id = query_string.get("fileId")

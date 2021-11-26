@@ -5,7 +5,7 @@ from sanic import Blueprint, json
 from sanic.response import empty
 from sanic_gzip import Compress
 
-from Models.FileModel import FileModel as FileModel
+from Models import FileModel
 
 information = Blueprint(name="api_information", url_prefix="/info")
 compress = Compress()

@@ -5,7 +5,7 @@ from sanic import Blueprint
 from sanic.response import empty, file_stream
 from sanic_gzip import Compress
 
-from Models.FileModel import FileModel as FileModel
+from Models import FileModel
 
 download = Blueprint(name="api_download", url_prefix="/download")
 compress = Compress()
