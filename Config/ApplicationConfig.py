@@ -1,7 +1,7 @@
 import json
 
-from Config.BaseConfig import BaseConfig
-from Config.EnvironmentConfig import get_environment_variable
+from os import getenv
+from Common import path
 
 
 class ApplicationConfig:
@@ -13,13 +13,13 @@ class ApplicationConfig:
         self.APP_NAME = "STORAGE_SERVICE"
         self.VERSION = "0.1.2"
         self.HOST = "0.0.0.0"
-        if bool(get_environment_variable("STORAGE_SERVICE_IS_PROD")):
+        if bool(getenv("STORAGE_SERVICE_IS_PROD")):
             self.PORT = 8000
         else:
             self.PORT = None
-        self.ACCESS_LOG = bool(get_environment_variable("STORAGE_SERVICE_ACCESS_LOG"))
+        self.ACCESS_LOG = bool(getenv("STORAGE_SERVICE_ACCESS_LOG"))
 
-        with open(BaseConfig.get_instance().APP_CONFIG_PATH, "r") as json_file:
+        with open(path.APP_CONFIG_ABS_PATH, "r") as json_file:
             content = json.load(json_file)
 
             if not self.PORT:
