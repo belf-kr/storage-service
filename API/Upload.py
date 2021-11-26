@@ -6,7 +6,7 @@ from sanic.response import empty, json
 from sanic_gzip import Compress
 
 import API
-from Common.Request import Headers
+from Common.Request import Headers, Query
 from Manager.File.FileManager import FileManager
 from Middleware.Authorization import JsonWebToken
 
@@ -52,6 +52,6 @@ async def file_upload(request: Request):
     return empty(
         status=HTTPStatus.CREATED,
         headers={
-            "Location": f"{API.api.version_prefix}{API.api.version}{API.download.url_prefix}/{str(file_model.pk)}"
+            "Location": f"{API.api.version_prefix}{API.api.version}{API.download.url_prefix}{Query.FILE_ID.value}?{str(file_model.pk)}"
         }
     )
