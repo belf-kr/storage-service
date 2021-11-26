@@ -9,8 +9,9 @@ class FileErrorCode(Enum):
     ERROR_VALUE_NOT_FOUND = "file value was not found"
     ERROR_ZERO_SIZE = "file size was zero"
     ERROR_EMPTY_NAME = "file name was empty"
+    ERROR_OPERATION = "file delete failed due to operation"
 
-    def to_error_message(self):
+    def get_error_message(self):
         return self.value
 
     def is_success(self):
