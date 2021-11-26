@@ -1,4 +1,3 @@
-import base64
 from functools import wraps
 from sanic.response import empty
 from sanic.request import Request
@@ -6,7 +5,6 @@ from Common.Request import Headers
 from http import HTTPStatus
 from Config import oauth
 import aiohttp
-import json
 import jwt
 
 

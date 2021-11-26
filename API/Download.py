@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from uuid import UUID
 
 from sanic import Blueprint
 from sanic.response import empty, file_stream

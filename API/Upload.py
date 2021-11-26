@@ -8,7 +8,7 @@ from sanic_gzip import Compress
 import API
 from Common.Request import Headers
 from Manager.File.FileManager import FileManager
-from MiddleWare.Authorization import JsonWebToken
+from Middleware.Authorization import JsonWebToken
 
 upload = Blueprint(name="api_upload", url_prefix="/upload")
 compress = Compress()

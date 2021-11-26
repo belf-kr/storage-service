@@ -5,9 +5,8 @@ from sanic.response import empty, json
 from sanic_gzip import Compress
 
 from Common import converter
-from Common.Request import Query
-from MiddleWare.Authorization import JsonWebToken
-from Common.Request import Headers
+from Common.Request import Query, Headers
+from Middleware.Authorization import JsonWebToken
 from Manager import FileManager
 
 
