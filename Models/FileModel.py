@@ -1,10 +1,13 @@
 from tortoise.fields import CharField, UUIDField, DatetimeField, IntField
-from tortoise.models import Model
+from tortoise.models import Model as BaseModel
 
 from Config.UploadConfig import UploadConfig
 
 
-class File(Model):
+class FileModel(BaseModel):
+    """
+    ORM File Model
+    """
     id = UUIDField(pk=True)
     ext = CharField(max_length=100, null=False)
     mime_type = CharField(max_length=100, null=False)
@@ -12,20 +15,21 @@ class File(Model):
     file_size = IntField()
     user_id = IntField()
 
-    class Meta:
-        tablename = "file"
-
-    def get_file_name(self):
+    def get_file_name(self) -> str:
+        """
+        Get file name
+        :return: string
+        """
         return str(self.id) + self.ext
 
-    def get_file_path(self) -> str:
+    def get_abs_path(self) -> str:
+        """
+        Get abs file path
+        :return: string
+        """
         return f"{UploadConfig.get_instance().UPLOAD_ABS_PATH}/{self.pk}"
 
-    @staticmethod
-    def get_file_path_by_id(file_id: str):
-        return f"{UploadConfig.get_instance().UPLOAD_ABS_PATH}/{file_id}"
-
-    async def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "id": str(self.pk),
             "ext": self.ext,

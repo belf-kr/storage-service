@@ -8,7 +8,7 @@ from typing import (
 )
 
 import aerich
-import uvloop
+
 from sanic import (
     Sanic,
     Request
@@ -21,21 +21,13 @@ from sanic.handlers import ErrorHandler
 from sanic.router import Router
 from sanic.signals import SignalRouter
 from sanic_cors import CORS
-from tortoise import Model
 from tortoise.contrib.sanic import register_tortoise
 
+from TortoiseRouter import TortoiseRouter
 from API import api
 from Config.ApplicationConfig import ApplicationConfig
 from Config.DatabaseConfig import DatabaseConfig
-from Models import File
-
-
-class TortoiseRouter:
-    def db_for_read(self, model: Type[Model]):
-        return "slave"
-
-    def db_for_write(self, model: Type[Model]):
-        return "master"
+from Models import FileModel
 
 
 class Application(Sanic):
@@ -76,29 +68,11 @@ class Application(Sanic):
 
     def start(self):
         self.app_init()
-        self.set_events()
         self.run(
             host=self.application_config.HOST,
             port=self.application_config.PORT,
             auto_reload=True
         )
-
-    def set_events(self):
-        @self.listener('before_server_start')
-        async def before_server_start(app: Sanic, loop: uvloop.Loop):
-            ...
-
-        @self.listener('after_server_start')
-        async def after_server_start(app: Sanic, loop: uvloop.Loop):
-            ...
-
-        @self.listener('before_server_stop')
-        async def before_server_start(app: Sanic, loop: uvloop.Loop):
-            ...
-
-        @self.listener('after_server_stop')
-        async def after_server_start(app: Sanic, loop: uvloop.Loop):
-            ...
 
     def app_init(self):
         # CORS
@@ -112,7 +86,7 @@ class Application(Sanic):
             },
             "apps": {
                 "models": {
-                    "models": [File, aerich.models],
+                    "models": [FileModel, aerich.models],
                     "default_connection": "master",
                 }
             },
