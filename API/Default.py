@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from os import environ
 
 from sanic import Blueprint
@@ -19,7 +20,7 @@ async def get_service_name(_):
 @default.get("/ping")
 @compress.compress()
 async def get_ping(_):
-    return empty()
+    return empty(status=HTTPStatus.OK)
 
 
 @default.get("/version")
