@@ -5,3 +5,4 @@ sanic_gzip
 uvloop>=0.15.3
 aerich>=0.5.8
 aiomysql
+pyjwt
