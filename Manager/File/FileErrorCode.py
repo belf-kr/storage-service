@@ -10,6 +10,7 @@ class FileErrorCode(Enum):
     ERROR_ZERO_SIZE = "file size was zero"
     ERROR_EMPTY_NAME = "file name was empty"
     ERROR_OPERATION = "file delete failed due to operation"
+    ERROR_NOT_EXIST = "file was not exist"
 
     def get_error_message(self):
         return self.value
