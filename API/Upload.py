@@ -51,9 +51,5 @@ async def file_upload(request: Request):
 
     location = f"{API.api.version_prefix}{API.api.version}{API.download.url_prefix}"
     location += f"?{Query.FILE_ID.value}={str(file_model.pk)}"
-    headers = {
-        "Location": location,
-        "Access-Control-Allow-Origin": "*"
-    }
 
-    return empty(status=HTTPStatus.CREATED, headers=headers)
+    return empty(status=HTTPStatus.CREATED, headers={"Location": location})

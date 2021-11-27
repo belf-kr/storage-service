@@ -20,7 +20,8 @@ from sanic.config import (
 from sanic.handlers import ErrorHandler
 from sanic.router import Router
 from sanic.signals import SignalRouter
-from sanic_cors import CORS
+from sanic_plugin_toolkit import SanicPluginRealm
+from sanic_cors.extension import cors
 from tortoise.contrib.sanic import register_tortoise
 
 from TortoiseRouter import TortoiseRouter
@@ -74,8 +75,9 @@ class Application(Sanic):
         )
 
     def app_init(self):
-        # CORS
-        CORS(self)
+
+        realm = SanicPluginRealm(self)
+        realm.register_plugin(cors, automatic_options=True)
 
         # Master Slave Config of MySQL Connection Info
         config = {
