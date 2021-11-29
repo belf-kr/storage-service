@@ -46,6 +46,8 @@ async def file_upload(request: Request):
 
     if Headers.CONTENT_LENGTH.str() in request.headers.keys():
         file_size = request.headers.get(Headers.CONTENT_LENGTH.str())
+        if int(file_size) == 0:
+            return empty(status=HTTPStatus.NOT_ACCEPTABLE)
     else:
         return empty(status=HTTPStatus.LENGTH_REQUIRED)
 
@@ -56,13 +58,21 @@ async def file_upload(request: Request):
     file_id = file_model.id.__str__()
     file_path = FileManager.get_abs_path_by_id(file_id)
 
-    async with aiofiles.open(file_path, 'wb') as fp:
-        while True:
-            body = await request.stream.read()
-            if body is None:
-                break
-            await fp.write(body)
-        await fp.close()
+    read_body_size = 0
+    try:
+        async with aiofiles.open(file_path, 'wb') as fp:
+            while True:
+                body = await request.stream.read()
+                if body is None:
+                    break
+                await fp.write(body)
+                read_body_size += len(body)
+            await fp.close()
+    finally:
+        if int(file_size) != read_body_size:
+            await aiofiles.os.remove(file_path)
+            await FileManager.delete_file(file_id)
+            return empty(status=HTTPStatus.BAD_REQUEST)
 
     location = f"{API.api.version_prefix}{API.api.version}{API.download.url_prefix}"
     location += f"?{Query.FILE_ID.str()}={file_id}"
