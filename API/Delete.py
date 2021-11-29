@@ -24,12 +24,8 @@ async def file_delete(request: Request):
     :return:
     """
     query_string = converter.query_string_to_dict(request.query_string)
-
-    value = request.headers.get(Headers.AUTHORIZATION.value)
-
-    payload = JsonWebToken.get_payload(value)
-    user_id = payload.get('user_id')
-    file_id = query_string.get(Query.FILE_ID.value)
+    user_id = JsonWebToken.get_user_id(request)
+    file_id = query_string.get(Query.FILE_ID.str())
 
     status = HTTPStatus.OK
 
