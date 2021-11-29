@@ -16,7 +16,7 @@ compress = Compress()
 
 @delete.delete("/")
 @compress.compress()
-@JsonWebToken.only_validated()
+@JsonWebToken.Middleware.only_validated()
 async def file_delete(request: Request):
     """
     Delete logical and physical file data

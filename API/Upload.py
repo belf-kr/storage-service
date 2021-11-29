@@ -20,7 +20,7 @@ compress = Compress()
 
 @upload.post("/", stream=True)
 @compress.compress()
-@JsonWebToken.only_validated()
+@JsonWebToken.Middleware.only_validated()
 async def file_upload(request: Request):
     """
     Upload physical and logical single file data
