@@ -1,6 +1,5 @@
-import mimetypes
-import os
 import uuid
+from typing import Optional
 
 import aiofiles
 import aiofiles.os
@@ -35,14 +34,19 @@ class FileManager:
         return FileErrorCode.ERROR_SUCCESS
 
     @staticmethod
-    async def create_file_model(file: File, user_id: int) -> FileModel:
-        file_name, ext = os.path.splitext(file.name)
-        return await FileModel.create(
-            ext=ext,
-            mime_type=mimetypes.guess_type(file.name)[0],
-            file_size=len(file.body),
-            user_id=user_id
-        )
+    async def create_file_model(mime_type: str, file_size: int, user_id: int) -> Optional[FileModel]:
+        try:
+            _, file_ext = mime_type.split("/")
+            return await FileModel.create(
+                ext=file_ext,
+                mime_type=mime_type,
+                file_size=file_size,
+                user_id=user_id
+            )
+        except AttributeError:
+            return None
+        except ValueError:
+            return None
 
     @staticmethod
     def get_abs_path_by_id(file_id: str) -> str:
