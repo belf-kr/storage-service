@@ -24,7 +24,7 @@ async def information_by_id(request: Request):
     """
 
     queries = converter.query_string_to_dict(request.query_string)
-    file_id = queries.get(Query.FILE_ID.value)
+    file_id = queries.get(Query.FILE_ID.str())
 
     if file_id:
         try:
