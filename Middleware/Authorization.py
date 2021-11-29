@@ -31,6 +31,11 @@ class JsonWebToken:
         return payload
 
     @staticmethod
+    def get_user_id(request: Request):
+        authorization = request.headers.get(Headers.AUTHORIZATION.str())
+        return JsonWebToken.get_payload(authorization).get('user_id')
+
+    @staticmethod
     def only_validated():
         def decorator(f):
             @wraps(f)
@@ -41,7 +46,6 @@ class JsonWebToken:
                     response = await f(request, *args, **kwargs)
                     return response
                 else:
-                    return empty(status=HTTPStatus.FORBIDDEN)
+                    return empty(status=HTTPStatus.UNAUTHORIZED)
             return decorated_function
-
         return decorator
