@@ -65,7 +65,7 @@ async def file_upload(request: Request):
         await fp.close()
 
     location = f"{API.api.version_prefix}{API.api.version}{API.download.url_prefix}"
-    location += f"?{Query.FILE_ID.value}={file_id}"
+    location += f"?{Query.FILE_ID.str()}={file_id}"
     headers = {
         Headers.ACCESS_CONTROL_EXPOSE_HEADERS.str(): "*",
         Headers.LOCATION.str(): location
