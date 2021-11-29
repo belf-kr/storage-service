@@ -27,9 +27,9 @@ async def file_upload(request: Request):
     :param request:
     :return:
     """
-    user_id = JsonWebToken.get_user_id(request.headers.get(Headers.AUTHORIZATION.value))
+    user_id = JsonWebToken.get_user_id(request)
     if not user_id:
-        return empty(status=HTTPStatus.BAD_REQUEST)
+        return empty(status=HTTPStatus.FORBIDDEN)
 
     if Headers.CONTENT_TYPE.str() in request.headers.keys():
         try:
@@ -42,7 +42,7 @@ async def file_upload(request: Request):
         except ValueError:
             return empty(status=HTTPStatus.BAD_REQUEST)
     else:
-        return empty(status=HTTPStatus.BAD_REQUEST)
+        return empty(status=HTTPStatus.NO_CONTENT)
 
     if Headers.CONTENT_LENGTH.str() in request.headers.keys():
         file_size = request.headers.get(Headers.CONTENT_LENGTH.str())
