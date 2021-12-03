@@ -27,8 +27,6 @@ async def file_delete(request: Request):
     user_id = JsonWebToken.get_user_id(request)
     file_id = query_string.get(Query.FILE_ID.str())
 
-    status = HTTPStatus.OK
-
     if not user_id or not file_id:
         return empty(status=HTTPStatus.BAD_REQUEST)
 
@@ -36,7 +34,12 @@ async def file_delete(request: Request):
 
     if error_code.is_success():
         request.app.add_task(FileManager.delete_file(file_id))
+        return empty(status=HTTPStatus.OK)
     else:
-        status = HTTPStatus.INTERNAL_SERVER_ERROR
+        return json(
+            body={
+                "error": error_code.get_error_message(),
+            },
+            status=HTTPStatus.UNPROCESSABLE_ENTITY
+        )
 
-    return empty(status=status)
