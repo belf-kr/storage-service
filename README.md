@@ -24,13 +24,11 @@ docker-compose down
 
 #### ping
 
-http://localhost:3000/storage/ping
-
-**API 서비스**를 로컬 개발환경에서 실행 후 **GET** 요청을 보내세요.
+http://localhost:3004/api/v1/default/ping
 
 #### 기타
 
-api-gateway 문서 내 File 하위 부분을 참고하세요
+Notion 내부의 api-gateway 문서 내 File 하위 부분을 참고하세요
 
 #### 환경 변수
 
@@ -44,10 +42,10 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 1. 실제 파일 데이터가 저장되는 경로
    1. dev
-      1. Pycharm, Visual Studio Code: 프로젝트 디렉토리 경로 + Config/upload_config.json 파일의 `STORAGE_SERVICE_UPLOAD_RELATIVE_PATH` 값
-      2. docker: docker-compose.yml 내부의 `STORAGE_SERVICE_UPLOAD_ABS_PATH` 환경 변수 값
+      1. Pycharm, Visual Studio Code: 프로젝트 디렉토리 경로 + Config/local/upload_config.json 파일의 `STORAGE_SERVICE_UPLOAD_PATH` 값
+      2. docker: docker-compose.yml 내부의 `STORAGE_SERVICE_UPLOAD_PATH` 환경 변수 값
    2. QA/production
-      1. K8S: STORAGE_SERVICE_UPLOAD_ABS_PATH 환경 변수 값
+      1. K8S: STORAGE_SERVICE_UPLOAD_PATH 환경 변수 값
 
 ## Stack
 
@@ -77,8 +75,9 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 1. storage-service 디렉토리를 열어줍니다.
 2. python3 -m venv venv 명령어를 이용해 **python3.9** 가상 환경을 생성합니다.
-3. 좌측의 벌레 모양 버튼을 눌러 디버깅 창으로 진입합니다.
-4. Sanic:main.py 값을 드롭 박스에서 선택 후 상단의 초록 화살표 버튼을 클릭해 디버깅을 실행합니다.
+3. `pip install -r requirements.txt` 명령어를 사용해 Python 패키지를 설치합니다.
+4. 좌측의 벌레 모양 버튼을 눌러 디버깅 창으로 진입합니다.
+5. Sanic:main.py 값을 드롭 박스에서 선택 후 상단의 초록 화살표 버튼을 클릭해 디버깅을 실행합니다.
 
 > VSCode 터미널(쉘)에서 python --version 명령어로 python 버전을 확인하거나,
 > 유닉스 계열의 OS 에서 which python 명령어를 시용해 2번에서 생성한 venv 경로가 정상적으로 잡히는지 확인이 가능합니다.
@@ -96,7 +95,8 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 2. 상단 우측의 초록색 벌레 모양과 화살표 모양 좌측에 있는 프로젝트 시작 프리셋을 클릭 한 다음 Edit Configurations 내부로 들어갑니다.
 3. script path 항목으로 storage-service 내부의 main.py 파일을 선택 해 줍니다.
 4. Python interpreter 항목에 **python3.9** 이상의 python 인터프리터가 존재하지 않는 경우 Pycharm 기능을 사용해 생성 후 선택 합니다.
-5. 실행 환경 설정 저장 후 해당 설정을 2번 프리셋 선택 창에서 선택 한 다음 상단 우측의 벌레 모양 아이콘을 클릭해서 디버깅 환경으로 진입합니다.
+5. `pip install -r requirements.txt` 명령어를 사용해 Python 패키지를 설치합니다.
+6. 실행 환경 설정 저장 후 해당 설정을 2번 프리셋 선택 창에서 선택 한 다음 상단 우측의 벌레 모양 아이콘을 클릭해서 디버깅 환경으로 진입합니다.
 
 > Pycharm 개발 환경 상단의 View-Tool Windows-Python Console 을 클릭해서 python -version 등의 명령어로
 > Pycharm 에서 인식한 python 버전 및 python 명령어 경로를 확인할 수 있습니다.
