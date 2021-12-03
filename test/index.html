@@ -7,6 +7,10 @@
         var email = "";
         var password = "test1!";
 
+        function log_down() {
+            document.body.scrollTop = document.body.scrollHeight;
+        }
+
         function set_host() {
             var host_ = document.getElementById("host_selc").value;
             switch (host_) {
@@ -30,14 +34,14 @@
         function set_user() {
             var host_ = document.getElementById("user_selc").value;
             switch (host_) {
-                case "test_1":
+                case "user01":
                     email = "user01@test.com";
                     break;
-                case "test_2":
+                case "user02":
                     email = "user02@test.com";
                     break;
-                case "test_3":
-                    email = "user03@test.com";
+                case "올바르지 않은 유저 정보":
+                    email = "";
                     break;
                 default:
                     break;
@@ -49,6 +53,8 @@
         }
         function log_s(msg) {
             document.getElementById("log").innerHTML += `<p>${msg}</p>`;
+            document.getElementById("log").scrollTop =
+                document.getElementById("log").scrollHeight;
         }
         function do_login(callback) {
             axios({
@@ -69,7 +75,6 @@
                 });
         }
         function onBtnClick_axios() {
-            clear_log();
             var file = document.getElementById("input").files[0];
 
             if (file) {
@@ -83,7 +88,6 @@
                         },
                         data: file,
                         onUploadProgress: (progressEvent) => {
-                            clear_log();
                             log_s(
                                 `file upload.. ${parseInt(
                                     (progressEvent.loaded * 100) /
@@ -283,9 +287,9 @@
             set_user()"
             >
                 <option value="">-</option>
-                <option value="test_1">test_1</option>
-                <option value="test_2">test_2</option>
-                <option value="test_3">test_3</option>
+                <option value="test_1">user01</option>
+                <option value="test_2">user02</option>
+                <option value="test_3">없는 유저</option>
             </select>
         </div>
         <hr />
@@ -309,7 +313,7 @@
         </div>
         <hr />
         <pre>
-            <div id="log" style="overflow:auto; height:750px;"></div>
+            <div id="log" style="overflow:scroll; height:750px;"></div>
         </pre>
         <hr />
     </body>
