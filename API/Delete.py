@@ -39,9 +39,4 @@ async def file_delete(request: Request):
     else:
         status = HTTPStatus.INTERNAL_SERVER_ERROR
 
-    return json(
-        body={
-            "message": error_code.get_error_message()
-        },
-        status=status
-    )
+    return empty(status=status)
