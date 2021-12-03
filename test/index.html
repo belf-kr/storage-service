@@ -88,15 +88,10 @@
                                 )[1];
                                 document.getElementById("file_id").value =
                                     file_id;
-
-                                document.getElementById(
-                                    "result_img"
-                                ).src = `${storage_host}${loc}`;
                             }
                         })
                         .catch((error) => {
                             log_s(`file upload fail - ${error}`);
-                            document.getElementById("result_img").src = ``;
                         });
                 });
             } else {
@@ -245,6 +240,17 @@
         function setPassword() {
             password = document.getElementById("input_pswd").value;
         }
+        function get_image() {
+            var file_id = document.getElementById("file_id").value;
+            if (file_id) {
+                document.getElementById(
+                    "result_img"
+                ).src = `${storage_host}/api/v1/download?file_id=${file_id}`;
+            }
+        }
+        function clear_img() {
+            document.getElementById("result_img").src = "";
+        }
     </script>
     <head>
         <meta charset="UTF-8" />
@@ -253,6 +259,7 @@
         <title>Document</title>
     </head>
     <body>
+        <br />
         <div>
             서버 선택 :
             <select
@@ -281,25 +288,46 @@
             />
             <button onclick="do_login()">로그인 테스트</button>
         </div>
+        <br />
         <hr />
+        <br />
         <input id="input" type="file" placeholder="image/*" />
         <button onclick="onBtnClick_axios()">업로드</button>
-        <input id="file_id" , type="text" placeholder="file_id" />
-        <button onclick="get_info()">정보 조회</button>
-        <button onclick="delete_file()">삭제 요청</button>
+        <br />
+        <br />
         <hr />
-        <button onclick="get_version()">서버 버전 조회</button>
-        <button onclick="get_env()">서버 환경 조회</button>
-        <button onclick="get_name()">서버 이름 조회</button>
-        <button onclick="get_ok()">서버 응답 조회</button>
+        <br />
+        <div>
+            <input id="file_id" , type="text" placeholder="file_id" />
+            <br />
+            <br />
+            <button onclick="get_info()">파일 정보 조회</button>
+            <button onclick="get_image()">파일 데이터 요청</button>
+            <button onclick="delete_file()">파일 삭제 요청</button>
+        </div>
+        <br />
         <hr />
+        <br />
+        <div>
+            <button onclick="get_version()">서버 버전 조회</button>
+            <button onclick="get_env()">서버 환경 조회</button>
+            <button onclick="get_name()">서버 이름 조회</button>
+            <button onclick="get_ok()">서버 응답 조회</button>
+        </div>
+        <br />
+        <hr />
+        <br />
         <div>
             <img id="result_img" width="200px" />
         </div>
+        <br />
         <hr />
+        <br />
         <div>
             <button onclick="clear_log()">로그 초기화</button>
+            <button onclick="clear_img()">사진 초기화</button>
         </div>
+        <br />
         <hr />
         <pre>
             <div id="log" style="overflow:scroll; height:500px;"></div>
