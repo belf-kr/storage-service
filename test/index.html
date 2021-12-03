@@ -7,10 +7,6 @@
         var email = "";
         var password = "test1!";
 
-        function log_down() {
-            document.body.scrollTop = document.body.scrollHeight;
-        }
-
         function set_host() {
             var host_ = document.getElementById("host_selc").value;
             switch (host_) {
@@ -40,7 +36,7 @@
                 case "user02":
                     email = "user02@test.com";
                     break;
-                case "올바르지 않은 유저 정보":
+                case "user03":
                     email = "";
                     break;
                 default:
@@ -98,7 +94,6 @@
                     };
                     axios(config)
                         .then((response) => {
-                            clear_log();
                             log_s(`file upload success - ${storage_host}`);
                             loc = response.headers["location"];
                             if (loc) {
@@ -287,9 +282,9 @@
             set_user()"
             >
                 <option value="">-</option>
-                <option value="test_1">user01</option>
-                <option value="test_2">user02</option>
-                <option value="test_3">없는 유저</option>
+                <option value="user01">user01</option>
+                <option value="user02">user02</option>
+                <option value="user03">없는 유저</option>
             </select>
         </div>
         <hr />
@@ -313,7 +308,7 @@
         </div>
         <hr />
         <pre>
-            <div id="log" style="overflow:scroll; height:750px;"></div>
+            <div id="log" style="overflow:scroll; height:500px;"></div>
         </pre>
         <hr />
     </body>
