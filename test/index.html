@@ -5,7 +5,7 @@
         var storage_host = "";
         var oauth_host = "";
         var email = "";
-        var password = "test1!";
+        var password = "";
 
         function set_host() {
             var host_ = document.getElementById("host_selc").value;
@@ -21,23 +21,6 @@
                 case "prod":
                     storage_host = "https://storage.belf.xyz";
                     oauth_host = "https://oauth.belf.xyz";
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        function set_user() {
-            var host_ = document.getElementById("user_selc").value;
-            switch (host_) {
-                case "user01":
-                    email = "user01@test.com";
-                    break;
-                case "user02":
-                    email = "user02@test.com";
-                    break;
-                case "user03":
-                    email = "";
                     break;
                 default:
                     break;
@@ -64,7 +47,9 @@
             })
                 .then((response) => {
                     log_s(`login success - ${oauth_host}`);
-                    callback(response.data["accessToken"]);
+                    if (callback) {
+                        callback(response.data["accessToken"]);
+                    }
                 })
                 .catch((error) => {
                     log_s(`login fail - ${error}`);
@@ -253,6 +238,13 @@
                     );
                 });
         }
+
+        function setEmail() {
+            email = document.getElementById("input_email").value;
+        }
+        function setPassword() {
+            password = document.getElementById("input_pswd").value;
+        }
     </script>
     <head>
         <meta charset="UTF-8" />
@@ -274,18 +266,20 @@
                 <option value="qa">QA 서버</option>
                 <option value="prod">PROD 서버</option>
             </select>
-            유저 선택 :
-            <select
-                name="user"
-                id="user_selc"
-                onchange="
-            set_user()"
-            >
-                <option value="">-</option>
-                <option value="user01">user01</option>
-                <option value="user02">user02</option>
-                <option value="user03">없는 유저</option>
-            </select>
+            <a>계정 정보</a>
+            <input
+                id="input_email"
+                type="text"
+                placeholder="email"
+                onchange="setEmail()"
+            />
+            <input
+                id="input_pswd"
+                type="password"
+                placeholder="password"
+                onchange="setPassword()"
+            />
+            <button onclick="do_login()">로그인 테스트</button>
         </div>
         <hr />
         <input id="input" type="file" placeholder="image/*" />
