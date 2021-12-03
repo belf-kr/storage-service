@@ -37,7 +37,7 @@ async def download_by_id(request: Request):
 
     return await file_stream(
         file_model.get_abs_path(),
-        chunk_size=1024,
+        chunk_size=8192,
         mime_type=mime_type,
         filename=file_name,
         headers={
