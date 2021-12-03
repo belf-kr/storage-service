@@ -105,7 +105,7 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 ### 환경 변수 표 범례
 
-| 구성 요소     | 설명                                                                          |
+| 구성 요소  | 설명                                                                          |
 | ------------- | ----------------------------------------------------------------------------- |
 | Variable      | 환경 변수 이름                                                                |
 | dev           | 환경 변수가 개발 환경에서 사용되는지 여부                                     |
@@ -128,3 +128,8 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 | STORAGE_SERVICE_DB_NAME     | ✅  |   ✅    |     belf      | belf                                    | 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                                               |
 | STORAGE_SERVICE_DB_USER     | ✅  |   ✅    |     root      | root                                    | 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                                             |
 | STORAGE_SERVICE_DB_PASSWORD | ✅  |   ✅    |    example    | example                                 | 접속할 `DB`의 `User Password` 설정을 위한 값입니다.                                         |
+
+### 간단 테스트
+
+`./test/index.html` 을 Chrome 등을 통하여 열고 간단한 테스트 진행이 가능하도록 추가함. 
+
