@@ -6,7 +6,7 @@ from sanic.request import Request
 from sanic_gzip import Compress
 
 from Common import converter
-from Common.Request import Query
+from Common.Request import Query, Headers
 from Models import FileModel
 from tortoise.exceptions import DoesNotExist
 
@@ -24,7 +24,7 @@ async def download_by_id(request: Request):
     """
     try:
         queries = converter.query_string_to_dict(request.query_string)
-        file_model = await FileModel.get(id=queries.get(Query.FILE_ID.value))
+        file_model = await FileModel.get(id=queries.get(Query.FILE_ID.str()))
     except DoesNotExist:
         file_model = None
 
@@ -37,8 +37,10 @@ async def download_by_id(request: Request):
 
     return await file_stream(
         file_model.get_abs_path(),
-        chunk_size=1024,
+        chunk_size=8192,
         mime_type=mime_type,
         filename=file_name,
-        headers={"Content-Length": str(file_size)}
+        headers={
+            Headers.CONTENT_LENGTH.str(): str(file_size)
+        }
     )

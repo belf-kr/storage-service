@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="./axios.min.js"></script>
+    <script>
+        var storage_host = "";
+        var oauth_host = "";
+        var email = "";
+        var password = "";
+
+        function set_host() {
+            var host_ = document.getElementById("host_selc").value;
+            switch (host_) {
+                case "local":
+                    storage_host = "http://localhost:3004";
+                    oauth_host = "http://localhost:3001";
+                    break;
+                case "qa":
+                    storage_host = "https://storage.qa.belf.xyz";
+                    oauth_host = "https://oauth.qa.belf.xyz";
+                    break;
+                case "prod":
+                    storage_host = "https://storage.belf.xyz";
+                    oauth_host = "https://oauth.belf.xyz";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function clear_log() {
+            document.getElementById("log").innerHTML = "";
+        }
+        function log_s(msg) {
+            document.getElementById("log").innerHTML += `<p>${msg}</p>`;
+            document.getElementById("log").scrollTop =
+                document.getElementById("log").scrollHeight;
+        }
+        function do_login(callback) {
+            axios({
+                method: "post",
+                url: `${oauth_host}/api/users/login`,
+                headers: { "Content-Type": "application/json" },
+                data: {
+                    email: email,
+                    password: password,
+                },
+            })
+                .then((response) => {
+                    log_s(`login success - ${oauth_host}`);
+                    if (callback) {
+                        callback(response.data["accessToken"]);
+                    }
+                })
+                .catch((error) => {
+                    log_s(`login fail - ${error}`);
+                });
+        }
+        function onBtnClick_axios() {
+            var file = document.getElementById("input").files[0];
+
+            if (file) {
+                do_login((token) => {
+                    let config = {
+                        method: "post",
+                        url: `${storage_host}/api/v1/upload`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": file.type,
+                        },
+                        data: file,
+                        onUploadProgress: (progressEvent) => {
+                            log_s(
+                                `file upload.. ${parseInt(
+                                    (progressEvent.loaded * 100) /
+                                        progressEvent.total
+                                )}%`
+                            );
+                        },
+                    };
+                    axios(config)
+                        .then((response) => {
+                            log_s(`file upload success - ${storage_host}`);
+                            loc = response.headers["location"];
+                            if (loc) {
+                                log_s(`download image - ${storage_host}${loc}`);
+                                var file_id = String(loc).split(
+                                    "/api/v1/download?file_id="
+                                )[1];
+                                document.getElementById("file_id").value =
+                                    file_id;
+                            }
+                        })
+                        .catch((error) => {
+                            log_s(`file upload fail - ${error}`);
+                        });
+                });
+            } else {
+                log_s("error : please upload file first");
+            }
+        }
+
+        function get_info() {
+            var file_id = document.getElementById("file_id").value;
+            if (file_id) {
+                let config = {
+                    method: "get",
+                    url: `${storage_host}/api/v1/info?file_id=${file_id}`,
+                };
+                axios(config)
+                    .then((response) => {
+                        var file_info = response.data;
+                        log_s(JSON.stringify(file_info, null, 5));
+                    })
+                    .catch((error) => {
+                        log_s(error);
+                    });
+            }
+        }
+
+        function delete_file() {
+            var file_id = document.getElementById("file_id").value;
+            if (file_id) {
+                do_login((token) => {
+                    let config = {
+                        method: "delete",
+                        url: `${storage_host}/api/v1/delete?file_id=${file_id}`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    };
+
+                    axios(config)
+                        .then((response) => {
+                            log_s(`file_id=${file_id} - file delete success.`);
+                        })
+                        .catch((error) => {
+                            log_s(
+                                `file delete error - ${
+                                    error.response.data["error"]
+                                        ? error.response.data["error"]
+                                        : error
+                                }`
+                            );
+                        });
+                });
+            }
+        }
+        function get_version() {
+            let config = {
+                method: "get",
+                url: `${storage_host}/api/v1/default/version`,
+            };
+
+            axios(config)
+                .then((response) => {
+                    log_s(`${storage_host} - VERSION=${response.data}`);
+                })
+                .catch((error) => {
+                    log_s(
+                        `error - ${
+                            error.response.data["error"]
+                                ? error.response.data["error"]
+                                : error
+                        }`
+                    );
+                });
+        }
+
+        function get_env() {
+            let config = {
+                method: "get",
+                url: `${storage_host}/api/v1/default/env`,
+            };
+
+            axios(config)
+                .then((response) => {
+                    log_s(`${JSON.stringify(response.data, null, 5)}`);
+                })
+                .catch((error) => {
+                    log_s(
+                        `error - ${
+                            error.response.data["error"]
+                                ? error.response.data["error"]
+                                : error
+                        }`
+                    );
+                });
+        }
+        function get_name() {
+            let config = {
+                method: "get",
+                url: `${storage_host}/api/v1/default`,
+            };
+
+            axios(config)
+                .then((response) => {
+                    log_s(
+                        `${storage_host} - ${JSON.stringify(
+                            response.data,
+                            null,
+                            5
+                        )}`
+                    );
+                })
+                .catch((error) => {
+                    log_s(
+                        `error - ${
+                            error.response.data["error"]
+                                ? error.response.data["error"]
+                                : error
+                        }`
+                    );
+                });
+        }
+
+        function get_ok() {
+            let config = {
+                method: "get",
+                url: `${storage_host}/api/v1/default/ping`,
+            };
+
+            axios(config)
+                .then((response) => {
+                    log_s(`${storage_host} - OK`);
+                })
+                .catch((error) => {
+                    log_s(
+                        `error - ${
+                            error.response.data["error"]
+                                ? error.response.data["error"]
+                                : error
+                        }`
+                    );
+                });
+        }
+
+        function setEmail() {
+            email = document.getElementById("input_email").value;
+        }
+        function setPassword() {
+            password = document.getElementById("input_pswd").value;
+        }
+        function get_image() {
+            var file_id = document.getElementById("file_id").value;
+            if (file_id) {
+                document.getElementById(
+                    "result_img"
+                ).src = `${storage_host}/api/v1/download?file_id=${file_id}`;
+            }
+        }
+        function clear_img() {
+            document.getElementById("result_img").src = "";
+        }
+    </script>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <br />
+        <div>
+            서버 선택 :
+            <select
+                name="host"
+                id="host_selc"
+                onchange="
+            set_host()"
+            >
+                <option value="">-</option>
+                <option value="local">로컬 개발환경</option>
+                <option value="qa">QA 서버</option>
+                <option value="prod">PROD 서버</option>
+            </select>
+            <a>계정 정보</a>
+            <input
+                id="input_email"
+                type="text"
+                placeholder="email"
+                onchange="setEmail()"
+            />
+            <input
+                id="input_pswd"
+                type="password"
+                placeholder="password"
+                onchange="setPassword()"
+            />
+            <button onclick="do_login()">로그인 테스트</button>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <input id="input" type="file" placeholder="image/*" />
+        <button onclick="onBtnClick_axios()">업로드</button>
+        <br />
+        <br />
+        <hr />
+        <br />
+        <div>
+            <input id="file_id" , type="text" placeholder="file_id" />
+            <br />
+            <br />
+            <button onclick="get_info()">파일 정보 조회</button>
+            <button onclick="get_image()">파일 데이터 요청</button>
+            <button onclick="delete_file()">파일 삭제 요청</button>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div>
+            <button onclick="get_version()">서버 버전 조회</button>
+            <button onclick="get_env()">서버 환경 조회</button>
+            <button onclick="get_name()">서버 이름 조회</button>
+            <button onclick="get_ok()">서버 응답 조회</button>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div>
+            <img id="result_img" width="200px" />
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div>
+            <button onclick="clear_log()">로그 초기화</button>
+            <button onclick="clear_img()">사진 초기화</button>
+        </div>
+        <br />
+        <hr />
+        <pre>
+            <div id="log" style="overflow:scroll; height:500px;"></div>
+        </pre>
+        <hr />
+    </body>
+</html>

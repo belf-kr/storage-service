@@ -1,59 +1,84 @@
 from http import HTTPStatus
 
 from sanic import Blueprint
-from sanic.request import Request, File
-from sanic.response import empty, json
+from sanic.request import Request
+from sanic.response import empty
 from sanic_gzip import Compress
+
+import aiofiles
+import aiofiles.os
 
 import API
 from Common.Request import Headers, Query
 from Manager.File.FileManager import FileManager
+
 from Middleware.Authorization import JsonWebToken
 
 upload = Blueprint(name="api_upload", url_prefix="/upload")
 compress = Compress()
 
 
-@upload.post("/")
+@upload.post("/", stream=True)
 @compress.compress()
-@JsonWebToken.only_validated()
+@JsonWebToken.Middleware.only_validated()
 async def file_upload(request: Request):
     """
     Upload physical and logical single file data
     :param request:
     :return:
     """
-    payload = JsonWebToken.get_payload(request.headers.get(Headers.AUTHORIZATION.value))
-    user_id = payload.get('user_id')
-
+    user_id = JsonWebToken.get_user_id(request)
     if not user_id:
-        return empty(status=HTTPStatus.BAD_REQUEST)
+        return empty(status=HTTPStatus.FORBIDDEN)
 
-    error_code = FileManager.validate_files(request.files)
+    if Headers.CONTENT_TYPE.str() in request.headers.keys():
+        try:
+            file_mime: str = request.headers.get(Headers.CONTENT_TYPE.str())
+            file_type, file_format = file_mime.split("/")
+            if file_type != 'image':
+                return empty(status=HTTPStatus.NOT_ACCEPTABLE)
+        except AttributeError:
+            return empty(status=HTTPStatus.BAD_REQUEST)
+        except ValueError:
+            return empty(status=HTTPStatus.BAD_REQUEST)
+    else:
+        return empty(status=HTTPStatus.NO_CONTENT)
 
-    if not error_code.is_success():
-        return json(
-            body={
-                "message": error_code.get_error_message()
-            },
-            status=HTTPStatus.BAD_REQUEST
-        )
+    if Headers.CONTENT_LENGTH.str() in request.headers.keys():
+        file_size = request.headers.get(Headers.CONTENT_LENGTH.str())
+        if int(file_size) == 0:
+            return empty(status=HTTPStatus.NOT_ACCEPTABLE)
+    else:
+        return empty(status=HTTPStatus.LENGTH_REQUIRED)
 
-    file: File = request.files.get('file')
-    file_model = await FileManager.create_file_model(file, user_id)
+    file_model = await FileManager.create_file_model(file_mime, file_size, user_id)
+    if not file_model:
+        return empty(status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    request.app.add_task(
-        FileManager.upload_file(
-            file,
-            str(file_model.pk)
-        )
-    )
+    file_id = file_model.id.__str__()
+    file_path = FileManager.get_abs_path_by_id(file_id)
+
+    read_body_size = 0
+    try:
+        async with aiofiles.open(file_path, 'wb') as fp:
+            while True:
+                body = await request.stream.read()
+                if body is None:
+                    break
+                await fp.write(body)
+                read_body_size += len(body)
+            await fp.close()
+    finally:
+        if int(file_size) != read_body_size:
+            await aiofiles.os.remove(file_path)
+            await FileManager.delete_file(file_id)
+            return empty(status=HTTPStatus.BAD_REQUEST)
 
     location = f"{API.api.version_prefix}{API.api.version}{API.download.url_prefix}"
-    location += f"?{Query.FILE_ID.value}={str(file_model.pk)}"
+    location += f"?{Query.FILE_ID.str()}={file_id}"
     headers = {
-        "Access-Control-Expose-Headers": "*",
-        "Location": location
+        Headers.ACCESS_CONTROL_EXPOSE_HEADERS.str(): "*",
+        Headers.LOCATION.str(): location
     }
 
     return empty(status=HTTPStatus.CREATED, headers=headers)

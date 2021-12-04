@@ -16,7 +16,7 @@ compress = Compress()
 
 @delete.delete("/")
 @compress.compress()
-@JsonWebToken.only_validated()
+@JsonWebToken.Middleware.only_validated()
 async def file_delete(request: Request):
     """
     Delete logical and physical file data
@@ -24,14 +24,8 @@ async def file_delete(request: Request):
     :return:
     """
     query_string = converter.query_string_to_dict(request.query_string)
-
-    value = request.headers.get(Headers.AUTHORIZATION.value)
-
-    payload = JsonWebToken.get_payload(value)
-    user_id = payload.get('user_id')
-    file_id = query_string.get(Query.FILE_ID.value)
-
-    status = HTTPStatus.OK
+    user_id = JsonWebToken.get_user_id(request)
+    file_id = query_string.get(Query.FILE_ID.str())
 
     if not user_id or not file_id:
         return empty(status=HTTPStatus.BAD_REQUEST)
@@ -40,12 +34,12 @@ async def file_delete(request: Request):
 
     if error_code.is_success():
         request.app.add_task(FileManager.delete_file(file_id))
+        return empty(status=HTTPStatus.OK)
     else:
-        status = HTTPStatus.INTERNAL_SERVER_ERROR
+        return json(
+            body={
+                "error": error_code.get_error_message(),
+            },
+            status=HTTPStatus.UNPROCESSABLE_ENTITY
+        )
 
-    return json(
-        body={
-            "message": error_code.get_error_message()
-        },
-        status=status
-    )
