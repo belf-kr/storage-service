@@ -31,17 +31,22 @@ class JsonWebToken:
         return payload
 
     @staticmethod
-    def only_validated():
-        def decorator(f):
-            @wraps(f)
-            async def decorated_function(request: Request, *args, **kwargs):
-                value = request.headers.get(Headers.AUTHORIZATION.value)
-                is_authorized = await JsonWebToken.is_validated_json_web_token(authorization=value)
-                if is_authorized:
-                    response = await f(request, *args, **kwargs)
-                    return response
-                else:
-                    return empty(status=HTTPStatus.FORBIDDEN)
-            return decorated_function
+    def get_user_id(request: Request):
+        authorization = request.headers.get(Headers.AUTHORIZATION.str())
+        return JsonWebToken.get_payload(authorization).get('user_id')
 
-        return decorator
+    class Middleware:
+        @staticmethod
+        def only_validated():
+            def decorator(f):
+                @wraps(f)
+                async def decorated_function(request: Request, *args, **kwargs):
+                    value = request.headers.get(Headers.AUTHORIZATION.value)
+                    is_authorized = await JsonWebToken.is_validated_json_web_token(authorization=value)
+                    if is_authorized:
+                        response = await f(request, *args, **kwargs)
+                        return response
+                    else:
+                        return empty(status=HTTPStatus.UNAUTHORIZED)
+                return decorated_function
+            return decorator

@@ -23,7 +23,7 @@ class FileModel(Model):
         Get file name
         :return: string
         """
-        return str(self.id) + self.ext
+        return f"{str(self.id)}.{self.ext}"
 
     def get_abs_path(self) -> str:
         """
