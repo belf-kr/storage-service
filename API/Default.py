@@ -29,12 +29,12 @@ async def get_version(_):
     return text(app.VERSION)
 
 
-@default.get("/env")
-@compress.compress()
-async def get_env(_):
-    env_dict = {}
+# @default.get("/env")
+# @compress.compress()
+# async def get_env(_):
+#     env_dict = {}
 
-    for k, v in environ.items():
-        env_dict[k] = v
+#     for k, v in environ.items():
+#         env_dict[k] = v
 
-    return json(env_dict)
+#     return json(env_dict)
