@@ -1,4 +1,4 @@
-# Storage-service1
+# Storage-service
 
 ## 빠른 시작
 
