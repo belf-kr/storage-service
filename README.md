@@ -105,7 +105,7 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 ### 환경 변수 표 범례
 
-| 구성 요소  | 설명                                                                          |
+| 구성 요소     | 설명                                                                          |
 | ------------- | ----------------------------------------------------------------------------- |
 | Variable      | 환경 변수 이름                                                                |
 | dev           | 환경 변수가 개발 환경에서 사용되는지 여부                                     |
@@ -116,22 +116,23 @@ Belf 서비스에서 사용되는 파일 등의 정적 데이터를 관리하는
 
 ### 환경 변수 표
 
-| Variable                    | dev | qa/prod | Default value | Example                                 | Explanation                                                                                 |
-| --------------------------- | :-: | :-----: | :-----------: | --------------------------------------- | ------------------------------------------------------------------------------------------- |
-| STORAGE_SERVICE_IS_PROD     | 🚫  |   ✅    |               | true                                    | `K8S` 배포 환경인지 구분하기 위한 값입니다.                                                 |
-| STORAGE_SERVICE_PORT        | ✅  |   🚫    |     8000      | 8000, 3004                              | `HTTP listen port`를 설정하기 위한 값입니다.                                                |
-| STORAGE_SERVICE_SSL         | 🚫  |   🚫    |      ""       |                                         | `SSL` 설정을 위한 값입니다.(미사용)                                                         |
-| STORAGE_SERVICE_ACCESS_LOG  | ✅  |   ✅    |     true      | true, false                             | `Log` 사용 여부 설정을 위한 값입니다.                                                       |
-| STORAGE_SERVICE_UPLOAD_PATH | ✅  |   ✅    |    /upload    | /upload, /mnt/mount/azure/files/storage | 로컬 개발환경용 `상대경로나`, `Azure Files`와 `mount`될 `directory` 전체 경로를 입력합니다. |
-| STORAGE_SERVICE_DB_HOST     | ✅  |   ✅    |   127.0.0.1   | 127.0.0.1, host.docker.internal         | 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.                                  |
-| STORAGE_SERVICE_DB_PORT     | ✅  |   ✅    |     3306      | 3306, 3307                              | 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                                           |
-| STORAGE_SERVICE_DB_NAME     | ✅  |   ✅    |     belf      | belf                                    | 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                                               |
-| STORAGE_SERVICE_DB_USER     | ✅  |   ✅    |     root      | root                                    | 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                                             |
-| STORAGE_SERVICE_DB_PASSWORD | ✅  |   ✅    |    example    | example                                 | 접속할 `DB`의 `User Password` 설정을 위한 값입니다.                                         |
+| Variable                        | dev | qa/prod | Default value | Example                                 | Explanation                                                                                 |
+| ------------------------------- | :-: | :-----: | :-----------: | --------------------------------------- | ------------------------------------------------------------------------------------------- |
+| STORAGE_SERVICE_IS_PROD         | 🚫  |   ✅    |               | true                                    | `K8S` 배포 환경인지 구분하기 위한 값입니다.                                                 |
+| STORAGE_SERVICE_PORT            | ✅  |   🚫    |     8000      | 8000, 3004                              | `HTTP listen port`를 설정하기 위한 값입니다.                                                |
+| STORAGE_SERVICE_SSL             | 🚫  |   🚫    |      ""       |                                         | `SSL` 설정을 위한 값입니다.(미사용)                                                         |
+| STORAGE_SERVICE_ACCESS_LOG      | ✅  |   ✅    |     true      | true, false                             | `Log` 사용 여부 설정을 위한 값입니다.                                                       |
+| STORAGE_SERVICE_IS_USING_DOCKER | ✅  |   🚫    |     true      | true                                    | `Docker` 사용해 로컬 구동 여부를 설정을 위한 값입니다.                                      |
+| STORAGE_SERVICE_UPLOAD_PATH     | ✅  |   ✅    |    /upload    | /upload, /mnt/mount/azure/files/storage | 로컬 개발환경용 `상대경로나`, `Azure Files`와 `mount`될 `directory` 전체 경로를 입력합니다. |
+| STORAGE_SERVICE_DB_HOST         | ✅  |   ✅    |   127.0.0.1   | 127.0.0.1, host.docker.internal         | 접속할 `Master DB`의 `IP` 혹은 `URL` 설정을 위한 값입니다.                                  |
+| STORAGE_SERVICE_DB_PORT         | ✅  |   ✅    |     3306      | 3306, 3307                              | 접속할 `Master DB`의 `Port` 설정을 위한 값입니다.                                           |
+| STORAGE_SERVICE_DB_NAME         | ✅  |   ✅    |     belf      | belf                                    | 접속할 `DB`의 `DB Name` 설정을 위한 값입니다.                                               |
+| STORAGE_SERVICE_DB_USER         | ✅  |   ✅    |     root      | root                                    | 접속할 `DB`의 `User Name` 설정을 위한 값입니다.                                             |
+| STORAGE_SERVICE_DB_PASSWORD     | ✅  |   ✅    |    example    | example                                 | 접속할 `DB`의 `User Password` 설정을 위한 값입니다.                                         |
 
 ### 간단 테스트
 
-`./test/index.html` 을 Chrome 등을 통하여 열고 간단한 테스트 진행이 가능하도록 추가함. 
+`./test/index.html` 을 Chrome 등을 통하여 열고 간단한 테스트 진행이 가능하도록 추가함.
 
 #### 선행사항
 
@@ -140,5 +141,5 @@ Local 환경에서는 3004 번으로 Storage Service 가 열려있어야하며, 
 #### 테스트 방법
 
 1. 테스트를 원하는 서버를 선택한 후 로그인 테스트를 진행하여 정상적으로 로그인이 가능한지 확인한다.
-2. 파일을 업로드 한 후 요청을 보내본다. 성공시 하단 로그에 상세 정보가 찍히며, 자동으로 file_id input 필드가 채워진다. 
+2. 파일을 업로드 한 후 요청을 보내본다. 성공시 하단 로그에 상세 정보가 찍히며, 자동으로 file_id input 필드가 채워진다.
 3. 파일의 정보요청, 삭제, 이미지 다운로드, 그 외 서버의 스펙 요청등이 간단하게 가능하다.
