@@ -1,6 +1,6 @@
 # Storage-service
 
-[`한국어(KR)`](./README.md) | [English](./README.en-US.md)
+[한국어(KR)](./README.md) | [`English`](./README.en-US.md)
 
 ## Quick start
 
